@@ -139,7 +139,7 @@ is a normalized representation of the resource.
 Clients can run K-Check for OHTTP in several ways depending on the deployment. In practice,
 common deployments are as follows:
 
-1. Clients are configured with gateway configuration; and
+1. Clients are configured with gateway configurations; and
 1. Clients fetch gateway configurations before use.
 
 In both cases, clients begin with a gateway configuration and want to check it for consistency.
