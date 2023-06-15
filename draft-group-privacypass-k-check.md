@@ -9,8 +9,8 @@ number:
 date:
 consensus: true
 v: 3
-area: SEC
-workgroup: Privacy Pass
+area: "Security"
+workgroup: "Privacy Pass"
 keyword:
  - token
  - extensions
