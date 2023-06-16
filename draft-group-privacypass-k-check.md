@@ -3,7 +3,7 @@ title: "The K-Check Protocol for HTTP Resource Consistency"
 abbrev: "K-Check"
 category: std
 
-docname: draft-group-privacypass-K-Check-latest
+docname: draft-group-privacypass-k-check-latest
 submissiontype: IETF
 number:
 date:
