@@ -119,8 +119,6 @@ To complete the client request, the mirror then encodes the response using Binar
 HTTP {{BHTTP}} and returns it to the client in a response. The mirror response incldues a
 Cache-Control header with "max-age" directive set to that of the cached response.
 
-[[OPEN ISSUE: Should there be some mandatory or RECOMMENDED minimum validity window of resources?]]
-
 ## Mirror Request and Respnose Example
 
 The following example shows two mirror request and response examples. The first one yields a mirror
