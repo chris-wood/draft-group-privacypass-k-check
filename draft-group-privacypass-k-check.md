@@ -119,6 +119,9 @@ To complete the client request, the mirror then encodes the response using Binar
 HTTP {{BHTTP}} and returns it to the client in a response. The mirror response incldues a
 Cache-Control header with "max-age" directive set to that of the cached response.
 
+Clients recover the target's mirrored response by Binary HTTP decoding the mirror response
+content.
+
 ## Mirror Request and Respnose Example
 
 The following example shows two mirror request and response examples. The first one yields a mirror
