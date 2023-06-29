@@ -138,10 +138,8 @@ accept = application/private-token-issuer-directory
 
 Upon receipt, the mirror decodes the "target" parameter, inspects its cache for a copy of the
 resource, and then constructs a HTTP request to the target URL to fetch the content. If present,
-the relay copies the
-
-This mirror
-request to the target might be the following.
+the relay copies the Accept header from the client request to the request sent to the target.
+This mirror request to the target might be the following.
 
 ~~~
 :method = GET
