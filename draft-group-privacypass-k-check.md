@@ -62,22 +62,139 @@ The following terms are used throughout this document:
 
 # Mirror Protocol
 
-The mirror protocol is a simple protocol similar to a reverse-proxy. The mirror API accepts
-POST requests with content that contains the URL of the target HTTP resource. (We use POST
-here because it is generally bad practice to put content into GET requests, and POST
-responses can be cacheable.) Upon receipt, mirrors see if they have a cached version of
-the resource identified by the URL locally. If so, they return it to the client.
-Otherwise, mirrors send a GET request to the target resource URL. If this request fails,
-the mirror returns an error to the client. Otherwise, the response to a mirror request is
-the content that was contained in the target resource. With the exception of Cache-Control
-headers, the mirror response does not replicate any of the headers that may have been attached
-to the HTTP message carrying the target resource.
+The mirror protocol is a simple protocol similar to a reverse-proxy. Each mirror is identified
+by a Mirror URI Template {{!RFC6570}}. The scheme for the Mirror URI Template MUST be "https".
+The Mirror URI Template uses the Level 3 encoding defined {{Section 1.2 of RFC6570}} and contains
+one variables: "target", which is the percent-encoded URL of a HTTP resource to be mirrored.
+Example Mirror URI Templates are shown below.
 
-[[OPEN ISSUE: Should there be some mandatory or RECOMMENDED minimum validity window of resources?]]
+~~~
+https://mirror.example/mirror{?target}
+https://mirror.example/{target}
+~~~
 
-We refer to the set of clients that interact with a mirror as mirror clients. We refer to
-the validity window of the mirror response as the period of time determined by the Cache-Control
-headers as the response.
+The Mirror URI Template MUST contain the "target" variable exactly once. The variable
+MUST be within the path or query components of the URI.
+
+In addition, each mirror is configured with a MIN_VALIDITY_WINDOW parameter, which is an integer
+indicating the minimum time for resources the mirror will cache according to their "max-age"
+response directive. We refer to the validity window of the mirror response as the period of
+time determined by the Cache-Control headers as the response.
+
+Clients send requests to mirror resources after being configured with their corresponding
+Mirror URI Template. Clients MUST ignore configurations that do not conform to this template.
+
+Upon receipt of a mirror request, mirrors validate the incoming request. If the request is invalid
+or malformed, e.g., the "target" parameter is not a correctly encoded URL, the mirror aborts
+and returns a a 4xx (Client Error) to the client. The mirror SHOULD check that the target resource
+identified by the "target" parameter is allowed by policy, e.g., so that it is not abused to
+fetch arbitrary resources. One way to implement this check is via an allowlist of target URLs.
+
+If the request is valid and allowed, the mirror checks to see if it has a cached version of the
+resource identified by the target URL. Mirrors can provide a cached response to a client request
+if the following criteria are met:
+
+1. The target URL matches that of a cached response.
+1. The cached response is fresh according to its Cache-Control header (see {{Section 4.2 of ?CACHING=RFC9111}}).
+
+If both criteria are met, the mirror encodes the cached response using Binary HTTP {{!BHTTP=RFC9292}}
+and returns it to the client in a response. The mirror response incldues a Cache-Control header
+with "max-age" directive set to that of the cached response.
+
+Otherwise, mirrors send a GET request to the target resource URL, copying the Accept header from
+the client request if present. If this request fails, the mirror returns a 4xx error to the client.
+Otherwise, the response to a mirror request is the content that was contained in the target resource.
+If this request suceeeds, the mirror checks it for validity. The response is considered valid and stored
+in the mirror's cache if the following criteria are met:
+
+1. The response can be cached according to the rules in {{Section 3 of CACHING}}. In particular,
+   if the request had a Vary header, this is used in determining whether the mirror's response is valid.
+1. The Cache-Control header is present, has a "max-age" response directive that is
+   greater than or equal to MIN_VALIDITY_WINDOW, and does not have a "no-store" or "private" directive.
+
+If the response is valid, the response is stored in the mirror's cache. Mirrors purge this cache when
+the response is no longer valid according to the Cache-Control headers.
+
+To complete the client request, the mirror then encodes the response using Binary
+HTTP {{BHTTP}} and returns it to the client in a response. The mirror response incldues a
+Cache-Control header with "max-age" directive set to that of the cached response.
+
+Clients recover the target's mirrored response by Binary HTTP decoding the mirror response
+content.
+
+## Mirror Request and Respnose Example
+
+The following example shows two mirror request and response examples. The first one yields a mirror
+cache miss and the second one yields a mirror cache hit. The Mirror URI Template is
+"https://mirror.example/mirror{?target}", and the target URL is
+"https://issuer.example/.well-known/private-token-issuer-directory".
+
+The first client request to the mirror might be the following.
+
+~~~
+:method = GET
+:scheme = https
+:authority = mirror.example
+:path = /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fprivate-token-issuer-directory
+accept = application/private-token-issuer-directory
+~~~
+
+Upon receipt, the mirror decodes the "target" parameter, inspects its cache for a copy of the
+resource, and then constructs a HTTP request to the target URL to fetch the content. If present,
+the relay copies the Accept header from the client request to the request sent to the target.
+This mirror request to the target might be the following.
+
+~~~
+:method = GET
+:scheme = https
+:authority = target.example
+:path = /.well-known/private-token-issuer-directory
+accept = application/private-token-issuer-directory
+~~~
+
+The target response is then returned to the mirror, like so:
+
+~~~
+:status = 200
+content-type = application/private-token-issuer-directory
+content-length = ...
+cache-control: max-age=3600
+
+<Bytes containing a private token issuer directory>
+~~~
+
+The mirror caches this response content for the target URL, encodes it using Binary HTTP {{BHTTP}},
+and then returns the response to the client:
+
+~~~
+:status = 200
+content-length = ...
+cache-control: max-age=3600
+
+<Bytes containing the target's BHTTP-encoded response>
+~~~
+
+When a second client asks for the same request by the mirror it can be served with the cached
+copy. The second client's request might be the following:
+
+~~~
+:method = GET
+:scheme = https
+:authority = mirror.example
+:path = /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fprivate-token-issuer-directory
+~~~
+
+The mirror validates the request, locates the cached copy of the
+"https://issuer.example/.well-known/private-token-issuer-directory" content, and then
+returns it to the client without updating its cached copy.
+
+~~~
+:status = 200
+content-length = ...
+cache-control: max-age=3600
+
+<Bytes containing the target's BHTTP-encoded response>
+~~~
 
 # K-Check
 
