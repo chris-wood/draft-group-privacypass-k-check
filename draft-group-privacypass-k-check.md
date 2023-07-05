@@ -58,7 +58,7 @@ share the same key, or even that all clients globally share the same key. This i
 anonymity set size. In other words, the key that's used determines the set to which
 a particular client belongs. Using a unique, client-specific key would yield an anonymity set
 of size one, therefore violating the desired privacy goals of the system. Clients that
-use the same key are said to have a consistent view of the key.
+use the same key as one another are said to have a consistent view of the key.
 
 {{CONSISTENCY}} describes this notion of consistency in more detail. It also outlines
 several designs that can be used as the basis for consistency systems. This document is
