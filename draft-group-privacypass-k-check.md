@@ -62,7 +62,7 @@ use the same key as one another are said to have a consistent view of the key.
 
 {{CONSISTENCY}} describes this notion of consistency in more detail. It also outlines
 several designs that can be used as the basis for consistency systems. This document is
-a concrete instantiation of one of those designs -- Shared Cache Discovery. In particular,
+a concrete instantiation of one of those designs, "Shared Cache Discovery". In particular,
 this document describes a protocol called K-Check, based on {{DOUBLE-CHECK}},
 for checking that an HTTP resource is consistent with the view of one or more so-called mirrors.
 In this context, a mirror is an HTTP resource that fetches and caches copies of an HTTP resource
