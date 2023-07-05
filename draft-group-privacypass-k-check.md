@@ -56,7 +56,7 @@ messages to a gateway server.
 Deployments of protocols such as Privacy Pass and OHTTP requires that very large sets of clients
 share the same key, or even that all clients globally share the same key. This is because the privacy properties depend on the client
 anonymity set size. In other words, the key that's used determines the set to which
-a particular belongs. Using a unique, client-speicifc key would yield an anonymity set
+a particular client belongs. Using a unique, client-specific key would yield an anonymity set
 of size one, therefore violating the desired privacy goals of the system. Clients that
 use the same key are said to have a consistent view of the key.
 
