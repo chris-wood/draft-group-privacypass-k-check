@@ -40,7 +40,7 @@ informative:
 
 This document describes a protocol called K-Check for implementing HTTP resource consistency checks.
 The primary use case for K-Check is for deployments of protocols such as Privacy Pass and Oblivious
-HTTP wherein privacy goals require that clients have a consistent view of some protocol-specific
+HTTP in which privacy goals require that clients have a consistent view of some protocol-specific
 resource (typically, a public key).
 
 --- middle
