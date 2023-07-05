@@ -89,7 +89,7 @@ The following terms are used throughout this document:
 
 # Mirror Protocol
 
-The mirror protocol is a simple HTTP-based protocol similar to a reverse-proxy. Each mirror
+The mirror protocol is a simple HTTP-based protocol similar to a reverse proxy. Each mirror
 resource, henceforth referred to as a mirror, is identified by a Mirror URI Template {{!RFC6570}}.
 The scheme for the Mirror URI Template MUST be "https". The Mirror URI Template uses the Level
 3 encoding defined {{Section 1.2 of RFC6570}} and contains one variables: "target", which is the
