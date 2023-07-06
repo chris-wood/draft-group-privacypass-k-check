@@ -27,24 +27,51 @@ author:
     email: jdoe@weylandyutani.com
 
 normative:
+  PRIVACYPASS: I-D.ietf-privacypass-architecture
+  PRIVACYPASS-ISSUANCE: I-D.ietf-privacypass-protocol
+  CONSISTENCY: I-D.ietf-privacypass-key-consistency
+  OHTTP: I-D.ietf-ohai-ohttp
 
 informative:
+  DOUBLE-CHECK: I-D.schwartz-ohai-consistency-doublecheck
 
 
 --- abstract
 
-TODO Abstract
-
+This document describes a protocol called K-Check for implementing HTTP resource consistency checks.
+The primary use case for K-Check is for deployments of protocols such as Privacy Pass and Oblivious
+HTTP in which privacy goals require that clients have a consistent view of some protocol-specific
+resource (typically, a public key).
 
 --- middle
 
 # Introduction
 
-This document describes a protocol mechanism based on {{?DoubleCheck=I-D.schwartz-ohai-consistency-doublecheck}}
-for checking that an HTTP resource is consistent with the view of one or more mirrors. In this
-context, a mirror is an HTTP server that fetches and caches copies of an HTTP resource
+Privacy-enhancing protocols such as Privacy Pass {{PRIVACYPASS}} and Oblivious HTTP {{OHTTP}}
+require clients to obtain and use a public key for execution. In Privacy Pass,
+public keys are used by clients when issuing and redeeming tokens for anonymous
+authorization. In Oblivious HTTP (OHTTP), clients use public keys to encrypt
+messages to a gateway server.
+
+Deployments of protocols such as Privacy Pass and OHTTP requires that very large sets of clients
+share the same key, or even that all clients globally share the same key. This is because the privacy properties depend on the client
+anonymity set size. In other words, the key that's used determines the set to which
+a particular client belongs. Using a unique, client-specific key would yield an anonymity set
+of size one, therefore violating the desired privacy goals of the system. Clients that
+use the same key as one another are said to have a consistent view of the key.
+
+{{CONSISTENCY}} describes this notion of consistency in more detail. It also outlines
+several designs that can be used as the basis for consistency systems. This document is
+a concrete instantiation of one of those designs, "Shared Cache Discovery". In particular,
+this document describes a protocol called K-Check, based on {{DOUBLE-CHECK}},
+for checking that an HTTP resource is consistent with the view of one or more so-called mirrors.
+In this context, a mirror is an HTTP resource that fetches and caches copies of an HTTP resource
 for clients to use for consistency checks. More specifically, clients obtain copies of
 a desired resource from a mirror and then compare those copies to their resource.
+
+K-Check is a generic protocol for consistency checks of HTTP resources, and therefore is suitable
+for any protocol that needs consistency of an HTTP resource. {{profile-privacypass}} and {{profile-ohttp}}
+describe Privacy Pass and OHTTP profiles for K-Check, respectively.
 
 # Conventions and Definitions
 
@@ -55,18 +82,18 @@ a desired resource from a mirror and then compare those copies to their resource
 The following terms are used throughout this document:
 
 - Resource: A HTTP resource identified by a URL.
-- Normalized resource: A normalized HTTP resource representation is a unique or otherwise
-  protocol-specific representation that is derived from an HTTP resource. The process
-  of normalization is specific to a protocol and the resource in question.
-- Mirror: A HTTP server that fetches and caches HTTP resources.
+- Normalized resource representation: A unique or otherwise protocol-specific representation
+  that is derived from an HTTP resource. The process of normalization is specific to a
+  protocol and the resource in question.
+- Mirror: A HTTP resource that fetches and caches HTTP resources.
 
 # Mirror Protocol
 
-The mirror protocol is a simple protocol similar to a reverse-proxy. Each mirror is identified
-by a Mirror URI Template {{!RFC6570}}. The scheme for the Mirror URI Template MUST be "https".
-The Mirror URI Template uses the Level 3 encoding defined {{Section 1.2 of RFC6570}} and contains
-one variables: "target", which is the percent-encoded URL of a HTTP resource to be mirrored.
-Example Mirror URI Templates are shown below.
+The mirror protocol is a simple HTTP-based protocol similar to a reverse proxy. Each mirror
+resource, henceforth referred to as a mirror, is identified by a Mirror URI Template {{!RFC6570}}.
+The scheme for the Mirror URI Template MUST be "https". The Mirror URI Template uses the Level
+3 encoding defined {{Section 1.2 of RFC6570}} and contains one variables: "target", which is the
+percent-encoded URL of a HTTP resource to be mirrored. Example Mirror URI Templates are shown below.
 
 ~~~
 https://mirror.example/mirror{?target}
@@ -198,7 +225,7 @@ cache-control: max-age=3600
 
 # K-Check
 
-Clients are configured with the URLs for one or more mirror servers. Each URL identifies an API
+Clients are configured with the URLs for one or more mirror resources. Each URL identifies an API
 endpoint that clients use to obtain mirrored copies of a resource.
 
 The input to K-Check is a candidate HTTP resource, a target URL at which the resource
@@ -217,7 +244,7 @@ detected an inconsistency and outputs fail.
 
 [[OPEN ISSUE: Can mirrors somehow communicate the number of “active users” to clients? How would mirrors determine client uniqueness? And finally, if mirrors did this accurately, how would clients use this information?]]
 
-## Privacy Pass Profile
+## Privacy Pass Profile {#profile-privacypass}
 
 Clients are given as input an issuer token key from an origin server and want to check
 whether it is consistent with the key that is given to other clients. Let the input key
@@ -247,11 +274,11 @@ following:
 }
 ~~~
 
-Clients would take each “token-key” parameter, base64url-decode the result, and then
-derive a token key identifier as defined in the specification. Each token key identifier
-is a normalized representation of the resource.
+Clients take each “token-key” parameter, base64url-decode the result, and then
+derive a token key identifier as defined in {{Section 6.5 of PRIVACYPASS-ISSUANCE}}.
+Each token key identifier is a normalized representation of the resource.
 
-## Oblivious HTTP Profile
+## Oblivious HTTP Profile {#profile-ohttp}
 
 Clients can run K-Check for OHTTP in several ways depending on the deployment. In practice,
 common deployments are as follows:
@@ -265,9 +292,10 @@ the configuration itself. Before using the configuration to encrypt a binary HTT
 the gateway, clients can run K-Check with their configured mirrors to ensure that this
 configuration is correct for the given gateway.
 
-# Consistency Properties
+# Security Considerations
 
-The consistency properties of K-Check are as follows:
+K-Check assumes that at least one client-configured mirror is honest. Under this assumption,
+the consistency properties of K-Check are as follows:
 
 1. With honest mirrors, clients that successfully check a resource are assured that they
    share the same copy of the resource with the union of mirror clients for each configured mirror.
@@ -275,10 +303,8 @@ The consistency properties of K-Check are as follows:
 1. With at least one dishonest mirror, the probability of discovering an inconsistency is 1 - (1 / 2^(k-1)).
    This is the probability that each individual mirror check succeeds in the mirror protocol.
 
-# Security Considerations
-
-TODO Security
-
+Unless all clients share the same configured mirrors, K-Check does not achieve global consistency
+as is defined in {{CONSISTENCY}}.
 
 # IANA Considerations
 
@@ -290,4 +316,4 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-This document is based on the {{DoubleCheck}} protocol from Benjamin Schwartz.
+This document is based on the {{DOUBLE-CHECK}} protocol from Benjamin Schwartz.
