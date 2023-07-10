@@ -274,7 +274,7 @@ following:
 }
 ~~~
 
-Clients compute the first valid representation of this directory, which might be the key ID
+Clients compute the first valid representation of this directory, i.e., the first entry in the list that the client can use, which might be the key ID
 of the first key in the "token-keys" list (depending on the "not-before" value), or the
 key ID of the second key in the "token-keys" list. The key ID is computed as defined in
 {{Section 6.5 of PRIVACYPASS-ISSUANCE}}.
