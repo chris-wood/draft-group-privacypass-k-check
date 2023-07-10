@@ -229,15 +229,14 @@ Clients are configured with the URLs for one or more mirror resources. Each URL 
 endpoint that clients use to obtain mirrored copies of a resource.
 
 The input to K-Check is a candidate HTTP resource, a target URL at which the resource
-was obtained, and a normalized representation of the input resource. To check this
+was obtained, and a representation of the input resource. To check this
 resource, the client runs the following steps for each configured mirror.
 
 1. Send a mirror request to the mirror for the target URL. If the request fails, fail
    this mirror check.
-1. Otherwise, compute normalized values for the resource based on the mirror’s response.
-1. Compare the normalized values to the input normalized representation. If none match,
-   fail this mirror check. Otherwise, if there exists one matching resource normalized
-   representation, this mirror check succeeds.
+1. Otherwise, compute the first valid representation of the resource based on the mirror's response.
+1. Compare the computed representation to the input representation. If they do not match,
+   fail this mirror check. Otherwise, this mirror check succeeds.
 
 If all mirror checks succeed, the client outputs success. Otherwise, the client has
 detected an inconsistency and outputs fail.
@@ -265,6 +264,7 @@ following:
     {
       "token-type": 2,
       "token-key": "MI...AB",
+      "not-before": 1686913811,
     },
     {
       "token-type": 2,
@@ -274,9 +274,10 @@ following:
 }
 ~~~
 
-Clients take each “token-key” parameter, base64url-decode the result, and then
-derive a token key identifier as defined in {{Section 6.5 of PRIVACYPASS-ISSUANCE}}.
-Each token key identifier is a normalized representation of the resource.
+Clients compute the first valid representation of this directory, i.e., the first entry in the list that the client can use, which might be the key ID
+of the first key in the "token-keys" list (depending on the "not-before" value), or the
+key ID of the second key in the "token-keys" list. The key ID is computed as defined in
+{{Section 6.5 of PRIVACYPASS-ISSUANCE}}.
 
 ## Oblivious HTTP Profile {#profile-ohttp}
 
@@ -287,10 +288,9 @@ common deployments are as follows:
 1. Clients fetch gateway configurations before use.
 
 In both cases, clients begin with a gateway configuration and want to check it for consistency.
-In OHTTP, there is exactly one normalized resource representation for a gateway configuration –
-the configuration itself. Before using the configuration to encrypt a binary HTTP message to
-the gateway, clients can run K-Check with their configured mirrors to ensure that this
-configuration is correct for the given gateway.
+In OHTTP, there is exactly one representation for a gateway configuration – the configuration itself.
+Before using the configuration to encrypt a binary HTTP message to the gateway, clients can run
+K-Check with their configured mirrors to ensure that this configuration is correct for the given gateway.
 
 # Security Considerations
 
