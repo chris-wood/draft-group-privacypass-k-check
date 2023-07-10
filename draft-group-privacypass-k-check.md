@@ -27,6 +27,11 @@ author:
     organization: Inria & Mozilla
     email: ietf@beurdouche.com
  -
+    ins: M. Finkel
+    name: Matthew Finkel
+    org: Apple Inc.
+    email: sysrqb@apple.com
+ -
     ins: S. Valdez
     name: Steven Valdez
     org: Google LLC
