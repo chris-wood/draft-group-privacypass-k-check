@@ -22,9 +22,20 @@ venue:
 
 author:
  -
-    fullname: J. Doe
-    organization: Mars
-    email: jdoe@weylandyutani.com
+    ins: B. Beurdouche
+    name: Benjamin Beurdouche
+    organization: Inria & Mozilla
+    email: ietf@beurdouche.com
+ -
+    ins: S. Valdez
+    name: Steven Valdez
+    org: Google LLC
+    email: svaldez@chromium.org
+ -
+    ins: C. A. Wood
+    name: Christopher A. Wood
+    org: Cloudflare
+    email: caw@heapingbits.net
 
 normative:
   PRIVACYPASS: I-D.ietf-privacypass-architecture
