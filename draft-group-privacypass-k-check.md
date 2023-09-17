@@ -146,7 +146,6 @@ with "max-age" directive set to that of the cached response.
 
 Otherwise, mirrors send a GET request to the target resource URL, copying the Accept header from
 the client request if present. If this request fails, the mirror returns a 4xx error to the client.
-Otherwise, the response to a mirror request is the content that was contained in the target resource.
 If this request suceeeds, the mirror checks it for validity. The response is considered valid and stored
 in the mirror's cache if the following criteria are met:
 
@@ -155,8 +154,8 @@ in the mirror's cache if the following criteria are met:
 1. The Cache-Control header is present, has a "max-age" response directive that is
    greater than or equal to MIN_VALIDITY_WINDOW, and does not have a "no-store" or "private" directive.
 
-If the response is valid, the response is stored in the mirror's cache. Mirrors purge this cache when
-the response is no longer valid according to the Cache-Control headers.
+Mirrors purge this cache when the response is no longer valid according to the
+Cache-Control headers.
 
 To complete the client request, the mirror then encodes the response using Binary
 HTTP {{BHTTP}} and returns it to the client in a response. The mirror response incldues a
@@ -165,7 +164,7 @@ Cache-Control header with "max-age" directive set to that of the cached response
 Clients recover the target's mirrored response by Binary HTTP decoding the mirror response
 content.
 
-## Mirror Request and Respnose Example
+## Mirror Request and Response Example
 
 The following example shows two mirror request and response examples. The first one yields a mirror
 cache miss and the second one yields a mirror cache hit. The Mirror URI Template is
