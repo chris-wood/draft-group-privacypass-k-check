@@ -239,10 +239,11 @@ cache-control: max-age=3600
 <Bytes containing the target's BHTTP-encoded response>
 ~~~
 
-# K-Check
+# K-Check {#k-check}
 
-Clients are configured with the URLs for one or more mirror resources. Each URL identifies an API
-endpoint that clients use to obtain mirrored copies of a resource.
+Clients are configured with 1) the URLs for one or more mirror resources, and 2) a non-zero positive
+integer value t that defines the required threshold for success. Each URL identifies an API endpoint
+that clients use to obtain mirrored copies of a resource.
 
 The input to K-Check is a candidate HTTP resource, a target URL at which the resource
 was obtained, and a representation of the input resource. To check this
@@ -254,8 +255,12 @@ resource, the client runs the following steps for each configured mirror.
 1. Compare the computed representation to the input representation. If they do not match,
    fail this mirror check. Otherwise, this mirror check succeeds.
 
-If all mirror checks succeed, the client outputs success. Otherwise, the client has
+If at least t mirror checks succeed, the client outputs success. Otherwise, the client has
 detected an inconsistency and outputs fail.
+
+The choice of t allows a client to manage risk associated with sporatic network failure or a misbehaving
+mirror causing denial of service. A higher value of t provides better consistency guarantees, but with
+lower tolerance for failures.
 
 [[OPEN ISSUE: Can mirrors somehow communicate the number of “active users” to clients? How would mirrors determine client uniqueness? And finally, if mirrors did this accurately, how would clients use this information?]]
 
@@ -310,14 +315,14 @@ K-Check with their configured mirrors to ensure that this configuration is corre
 
 # Security Considerations
 
-K-Check assumes that at least one client-configured mirror is honest. Under this assumption,
-the consistency properties of K-Check are as follows:
+K-Check assumes that a subset of client-configured mirrors are honest. The exact guarantees depend on the
+configured threshold t, defined in {{k-check}}. Under this assumption, the consistency properties of K-Check
+are as follows:
 
 1. With honest mirrors, clients that successfully check a resource are assured that they
    share the same copy of the resource with the union of mirror clients for each configured mirror.
 1. Consistency only holds for the period of time of the minimum mirror validity window.
-1. With at least one dishonest mirror, the probability of discovering an inconsistency is 1 - (1 / 2^(k-1)).
-   This is the probability that each individual mirror check succeeds in the mirror protocol.
+1. Discovering an inconsistency requires that at least k - t + 1 mirrors are honest.
 
 Unless all clients share the same configured mirrors, K-Check does not achieve global consistency
 as is defined in {{CONSISTENCY}}.
