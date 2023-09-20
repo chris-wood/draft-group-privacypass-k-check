@@ -319,7 +319,7 @@ In many of these systems, including common configurations for Oblivious HTTP and
 Privacy Pass, there is already a party who is necessarily trusted to protect the
 user's privacy in this way, and whose operational availability is already a
 prerequisite for using the system.  In Oblivious HTTP, this is the Relay; in
-Privacy Pass it is typically a transport proxy.
+Privacy Pass it is often the Attester.
 
 When such a party exists, it is RECOMMENDED that they operate a mirror service
 for their users and K is set to 1.  This avoids revealing any metadata about
