@@ -308,6 +308,24 @@ In OHTTP, there is exactly one representation for a gateway configuration – th
 Before using the configuration to encrypt a binary HTTP message to the gateway, clients can run
 K-Check with their configured mirrors to ensure that this configuration is correct for the given gateway.
 
+# Integrated Mirrors
+
+As discussed in {{introduction}}, K-Check's design is motivated by a requirement
+in various systems to protect the user's privacy by ensuring that they remain in a
+sufficiently large anonymity set.  K-Check's availability is also important, so
+that users do not lose access to the system.
+
+In many of these systems, including common configurations for Oblivious HTTP and
+Privacy Pass, there is already a party who is necessarily trusted to protect the
+user's privacy in this way, and whose operational availability is already a
+prerequisite for using the system.  In Oblivious HTTP, this is the Relay; in
+Privacy Pass it is typically a transport proxy.
+
+When such a party exists, it is RECOMMENDED that they operate a mirror service
+for their users and K is set to 1.  This avoids revealing any metadata about
+the client's activity to additional parties, reduces the likelihood of an outage,
+and does not impair security or privacy.
+
 # Security Considerations
 
 K-Check assumes that at least one client-configured mirror is honest. Under this assumption,
