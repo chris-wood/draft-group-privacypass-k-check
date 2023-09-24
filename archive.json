@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-09-21T00:18:40.091169+00:00",
+  "timestamp": "2023-09-24T00:20:09.953758+00:00",
   "repo": "chris-wood/draft-group-privacypass-k-check",
   "labels": [
     {
@@ -946,13 +946,13 @@
       "labels": [],
       "body": "Closes #16",
       "createdAt": "2023-09-20T19:05:25Z",
-      "updatedAt": "2023-09-20T19:27:55Z",
+      "updatedAt": "2023-09-21T14:35:32Z",
       "baseRepository": "chris-wood/draft-group-privacypass-k-check",
       "baseRefName": "main",
       "baseRefOid": "57dd72defef1180f256bde8a29171b365366dce3",
       "headRepository": "bemasc/draft-group-privacypass-k-check",
       "headRefName": "patch-1",
-      "headRefOid": "f9af101eca38940783b329db3b5411edc52e8332",
+      "headRefOid": "744348543feadba7850272fa0da016f659079de8",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -1013,9 +1013,9 @@
           "comments": [
             {
               "originalPosition": 15,
-              "body": "OK, I've changed this to \"... is often the Attester\".  (\"Typically\" seems too strong, given the joint Issuer-Attester and other models.)",
+              "body": "OK, I've changed this to \"... is often the Attester\".  (\"Typically\" seems too strong, given the joint Issuer-Attester and other models.)\r\n\r\nEDIT: Thinking about this some more, I've expanded it to \"... might be the Attester (in Split Mode) or a transport proxy\", and added a paragraph noting that the In-Band Consistency proposal is probably better if you can use it.",
               "createdAt": "2023-09-20T19:19:06Z",
-              "updatedAt": "2023-09-20T19:27:55Z"
+              "updatedAt": "2023-09-21T14:37:40Z"
             },
             {
               "originalPosition": 20,
