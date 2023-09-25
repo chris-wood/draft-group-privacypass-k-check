@@ -1,6 +1,6 @@
 ---
-title: "The HTTP Mirror Protocol and its use for Resource Consistency Checks"
-abbrev: "Mirror and Consistency Checks"
+title: "Checking Resource Consistency with HTTP Mirrors"
+abbrev: "Checking Resource Consistency with HTTP Mirrors"
 category: std
 
 docname: draft-group-privacypass-k-check-latest
