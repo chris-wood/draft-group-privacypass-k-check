@@ -323,8 +323,7 @@ Privacy Pass it might be the Attester (in Split Mode) or a transport proxy.
 
 When such a party exists, it is RECOMMENDED that they operate a mirror service
 for their users and K is set to 1.  This avoids revealing any metadata about
-the client's activity to additional parties, reduces the likelihood of an outage,
-and does not impair security or privacy.
+the client's activity to additional parties and reduces the likelihood of an outage.
 
 In some cases, this trusted party can provide consistency enforcement through
 a protocol-specific mechanism (e.g., {{?I-D.pw-privacypass-in-band-consistency}}
