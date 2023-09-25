@@ -80,11 +80,12 @@ Table of Contents
    5.  K-Check
      5.1.  Privacy Pass Profile
      5.2.  Oblivious HTTP Profile
-   6.  Security Considerations
-   7.  IANA Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   6.  Integrated Mirrors
+   7.  Security Considerations
+   8.  IANA Considerations
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -376,7 +377,34 @@ accept = application/private-token-issuer-directory
    mirrors to ensure that this configuration is correct for the given
    gateway.
 
-6.  Security Considerations
+6.  Integrated Mirrors
+
+   As discussed in Section 1, K-Check's design is motivated by a
+   requirement in various systems to protect the user's privacy by
+   ensuring that they remain in a sufficiently large anonymity set.
+   Mirror availability is also important, so that users do not lose
+   access to the system.
+
+   In many of these systems, including common configurations for
+   Oblivious HTTP and Privacy Pass, there is already a party who is
+   necessarily trusted to protect the user's privacy in this way, and
+   whose operational availability is already a prerequisite for using
+   the system.  In Oblivious HTTP, this is the Relay; in Privacy Pass it
+   might be the Attester (in Split Mode) or a transport proxy.
+
+   When such a party exists, it is RECOMMENDED that they operate a
+   mirror service for their users and K is set to 1.  This avoids
+   revealing any metadata about the client's activity to additional
+   parties and reduces the likelihood of an outage.
+
+   In some cases, this trusted party can provide consistency enforcement
+   through a protocol-specific mechanism (e.g.,
+   [I-D.pw-privacypass-in-band-consistency] for Privacy Pass in Split
+   Mode).  Protocol-specific consistency mechanisms may be preferable to
+   K-Check, if they provide equivalent consistency guarantees with
+   better performance or reliability.
+
+7.  Security Considerations
 
    K-Check assumes that at least one client-configured mirror is honest.
    Under this assumption, the consistency properties of K-Check are as
@@ -397,13 +425,13 @@ accept = application/private-token-issuer-directory
    Unless all clients share the same configured mirrors, K-Check does
    not achieve global consistency as is defined in [CONSISTENCY].
 
-7.  IANA Considerations
+8.  IANA Considerations
 
    This document has no IANA actions.
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [BHTTP]    Thomson, M. and C. A. Wood, "Binary Representation of HTTP
               Messages", RFC 9292, DOI 10.17487/RFC9292, August 2022,
@@ -424,16 +452,16 @@ accept = application/private-token-issuer-directory
    [PRIVACYPASS]
               Davidson, A., Iyengar, J., and C. A. Wood, "The Privacy
               Pass Architecture", Work in Progress, Internet-Draft,
-              draft-ietf-privacypass-architecture-15, 12 September 2023,
+              draft-ietf-privacypass-architecture-16, 25 September 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-
-              privacypass-architecture-15>.
+              privacypass-architecture-16>.
 
    [PRIVACYPASS-ISSUANCE]
               Celi, S., Davidson, A., Valdez, S., and C. A. Wood,
               "Privacy Pass Issuance Protocol", Work in Progress,
-              Internet-Draft, draft-ietf-privacypass-protocol-14, 14
+              Internet-Draft, draft-ietf-privacypass-protocol-15, 25
               September 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-privacypass-protocol-14>.
+              draft-ietf-privacypass-protocol-15>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -449,7 +477,7 @@ accept = application/private-token-issuer-directory
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [CACHING]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Caching", STD 98, RFC 9111,
@@ -462,6 +490,13 @@ accept = application/private-token-issuer-directory
               draft-schwartz-ohai-consistency-doublecheck-03, 19 October
               2022, <https://datatracker.ietf.org/doc/html/draft-
               schwartz-ohai-consistency-doublecheck-03>.
+
+   [I-D.pw-privacypass-in-band-consistency]
+              Pauly, T. and C. A. Wood, "Privacy Pass In-Band Key
+              Consistency Checks", Work in Progress, Internet-Draft,
+              draft-pw-privacypass-in-band-consistency-00, 10 July 2023,
+              <https://datatracker.ietf.org/doc/html/draft-pw-
+              privacypass-in-band-consistency-00>.
 
 Acknowledgments
 
