@@ -5,12 +5,12 @@
 Privacy Pass                                               B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Standards Track                               M. Finkel
-Expires: 11 January 2024                                      Apple Inc.
+Expires: 28 March 2024                                        Apple Inc.
                                                                S. Valdez
                                                               Google LLC
                                                               C. A. Wood
                                                               Cloudflare
-                                                            10 July 2023
+                                                       25 September 2023
 
 
            The K-Check Protocol for HTTP Resource Consistency
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 January 2024.
+   This Internet-Draft will expire on 28 March 2024.
 
 Copyright Notice
 
@@ -76,7 +76,7 @@ Table of Contents
    2.  Conventions and Definitions
    3.  Terminology
    4.  Mirror Protocol
-     4.1.  Mirror Request and Respnose Example
+     4.1.  Mirror Request and Response Example
    5.  K-Check
      5.1.  Privacy Pass Profile
      5.2.  Oblivious HTTP Profile
@@ -200,11 +200,10 @@ Table of Contents
 
    Otherwise, mirrors send a GET request to the target resource URL,
    copying the Accept header from the client request if present.  If
-   this request fails, the mirror returns a 4xx error to the client.
-   Otherwise, the response to a mirror request is the content that was
-   contained in the target resource.  If this request suceeeds, the
-   mirror checks it for validity.  The response is considered valid and
-   stored in the mirror's cache if the following criteria are met:
+   this request fails, the mirror returns a 4xx error to the client.  If
+   this request suceeeds, the mirror checks it for validity.  The
+   response is considered valid and stored in the mirror's cache if the
+   following criteria are met:
 
    1.  The response can be cached according to the rules in Section 3 of
        [CACHING].  In particular, if the request had a Vary header, this
@@ -214,8 +213,7 @@ Table of Contents
        directive that is greater than or equal to MIN_VALIDITY_WINDOW,
        and does not have a "no-store" or "private" directive.
 
-   If the response is valid, the response is stored in the mirror's
-   cache.  Mirrors purge this cache when the response is no longer valid
+   Mirrors purge this cache when the response is no longer valid
    according to the Cache-Control headers.
 
    To complete the client request, the mirror then encodes the response
@@ -226,7 +224,7 @@ Table of Contents
    Clients recover the target's mirrored response by Binary HTTP
    decoding the mirror response content.
 
-4.1.  Mirror Request and Respnose Example
+4.1.  Mirror Request and Response Example
 
    The following example shows two mirror request and response examples.
    The first one yields a mirror cache miss and the second one yields a
@@ -419,23 +417,23 @@ accept = application/private-token-issuer-directory
               draft-ietf-privacypass-key-consistency-01>.
 
    [OHTTP]    Thomson, M. and C. A. Wood, "Oblivious HTTP", Work in
-              Progress, Internet-Draft, draft-ietf-ohai-ohttp-08, 15
-              March 2023, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-ohai-ohttp-08>.
+              Progress, Internet-Draft, draft-ietf-ohai-ohttp-10, 25
+              August 2023, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ohai-ohttp-10>.
 
    [PRIVACYPASS]
               Davidson, A., Iyengar, J., and C. A. Wood, "The Privacy
               Pass Architecture", Work in Progress, Internet-Draft,
-              draft-ietf-privacypass-architecture-13, 15 June 2023,
+              draft-ietf-privacypass-architecture-15, 12 September 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-
-              privacypass-architecture-13>.
+              privacypass-architecture-15>.
 
    [PRIVACYPASS-ISSUANCE]
               Celi, S., Davidson, A., Valdez, S., and C. A. Wood,
               "Privacy Pass Issuance Protocol", Work in Progress,
-              Internet-Draft, draft-ietf-privacypass-protocol-11, 26
-              June 2023, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-privacypass-protocol-11>.
+              Internet-Draft, draft-ietf-privacypass-protocol-14, 14
+              September 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-privacypass-protocol-14>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
