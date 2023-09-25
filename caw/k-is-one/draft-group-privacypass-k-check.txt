@@ -13,7 +13,7 @@ Expires: 28 March 2024                                        Apple Inc.
                                                        25 September 2023
 
 
-  The HTTP Mirror Protocol and its use for Resource Consistency Checks
+            Checking Resource Consistency with HTTP Mirrors
                  draft-group-privacypass-k-check-latest
 
 Abstract
