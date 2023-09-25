@@ -312,7 +312,7 @@ K-Check with their configured mirrors to ensure that this configuration is corre
 
 As discussed in {{introduction}}, K-Check's design is motivated by a requirement
 in various systems to protect the user's privacy by ensuring that they remain in a
-sufficiently large anonymity set.  K-Check's availability is also important, so
+sufficiently large anonymity set.  Mirror availability is also important, so
 that users do not lose access to the system.
 
 In many of these systems, including common configurations for Oblivious HTTP and
