@@ -5,24 +5,27 @@
 Privacy Pass                                               B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Standards Track                               M. Finkel
-Expires: 28 March 2024                                        Apple Inc.
+Expires: 29 March 2024                                        Apple Inc.
                                                                S. Valdez
                                                               Google LLC
                                                               C. A. Wood
                                                               Cloudflare
-                                                       25 September 2023
+                                                       26 September 2023
 
 
-           The K-Check Protocol for HTTP Resource Consistency
+            Checking Resource Consistency with HTTP Mirrors
                  draft-group-privacypass-k-check-latest
 
 Abstract
 
-   This document describes a protocol called K-Check for implementing
-   HTTP resource consistency checks.  The primary use case for K-Check
-   is for deployments of protocols such as Privacy Pass and Oblivious
-   HTTP in which privacy goals require that clients have a consistent
-   view of some protocol-specific resource (typically, a public key).
+   This document describes the mirror protocol, an HTTP-based protocol
+   for fetching mirrored HTTP resources.  The primary use case for the
+   mirror protocol is to support HTTP resource consistency checks in
+   protocols that require clients have a consistent view of some
+   protocol-specific resource (typically, a public key) for security or
+   privacy reasons, including Privacy Pass and Oblivious HTTP.  To that
+   end, this document also describes how to use the mirror protocol to
+   implement these consistency checks.
 
 About This Document
 
@@ -54,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 March 2024.
+   This Internet-Draft will expire on 29 March 2024.
 
 Copyright Notice
 
@@ -77,15 +80,14 @@ Table of Contents
    3.  Terminology
    4.  Mirror Protocol
      4.1.  Mirror Request and Response Example
-   5.  K-Check
+   5.  Using Mirrors for Consistency Checks
      5.1.  Privacy Pass Profile
      5.2.  Oblivious HTTP Profile
-   6.  Integrated Mirrors
-   7.  Security Considerations
-   8.  IANA Considerations
-   9.  References
-     9.1.  Normative References
-     9.2.  Informative References
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -112,18 +114,22 @@ Table of Contents
    It also outlines several designs that can be used as the basis for
    consistency systems.  This document is a concrete instantiation of
    one of those designs, "Shared Cache Discovery".  In particular, this
-   document describes a protocol called K-Check, based on
-   [DOUBLE-CHECK], for checking that an HTTP resource is consistent with
-   the view of one or more so-called mirrors.  In this context, a mirror
-   is an HTTP resource that fetches and caches copies of an HTTP
-   resource for clients to use for consistency checks.  More
-   specifically, clients obtain copies of a desired resource from a
-   mirror and then compare those copies to their resource.
+   document describes the mirror protocol, which is a protocol for
+   fetching a cached copy of an HTTP resource from so-called mirrors.
+   In this context, a mirror is an HTTP resource that fetches and caches
+   copies of other HTTP resources that can be returned to clients.  In
+   turn, clients can then use these cached resource copies for
+   consistency checks, i.e., to compare their expected representation of
+   the resource against that which the mirrors provide.
 
-   K-Check is a generic protocol for consistency checks of HTTP
-   resources, and therefore is suitable for any protocol that needs
-   consistency of an HTTP resource.  Section 5.1 and Section 5.2
-   describe Privacy Pass and OHTTP profiles for K-Check, respectively.
+   The mirror protocol can be run one or more times by an application to
+   achieve the desired consistency criteria.  For example, the mirror
+   protocol can be run once with a trusted mirror, or more than once
+   with many, potentially less trusted mirrors, and used for determining
+   consistency.  Section 5 provides general guidance for using the
+   mirror protocol for consistency checks, along with specific profiles
+   of the protocol for Privacy Pass and OHTTP in Section 5.1 and
+   Section 5.2, respectively.
 
 2.  Conventions and Definitions
 
@@ -292,34 +298,52 @@ accept = application/private-token-issuer-directory
 
    <Bytes containing the target's BHTTP-encoded response>
 
-5.  K-Check
+5.  Using Mirrors for Consistency Checks
 
-   Clients are configured with the URLs for one or more mirror
-   resources.  Each URL identifies an API endpoint that clients use to
-   obtain mirrored copies of a resource.
-
-   The input to K-Check is a candidate HTTP resource, a target URL at
-   which the resource was obtained, and a representation of the input
-   resource.  To check this resource, the client runs the following
-   steps for each configured mirror.
+   Clients can use mirrors to implement consistency checks for a
+   candidate HTTP resource.  In particular, in possession of the target
+   URL at which the resource was obtained, as well as an authoritative
+   representation of the resource, clients can check to see if this
+   resource is consistent with that of the mirror's as follows:
 
    1.  Send a mirror request to the mirror for the target URL.  If the
-       request fails, fail this mirror check.
+       request fails, fail this consistency check.
 
    2.  Otherwise, compute the first valid representation of the resource
        based on the mirror's response.
 
-   3.  Compare the computed representation to the input representation.
-       If they do not match, fail this mirror check.  Otherwise, this
-       mirror check succeeds.
+   3.  Compare the computed representation to the input resource
+       representation.  If they do not match, fail this consistency
+       check.  Otherwise, this consistency check succeeds.
 
-   If all mirror checks succeed, the client outputs success.  Otherwise,
-   the client has detected an inconsistency and outputs fail.
+   The benefits of using the mirror protocol to check consistency depend
+   on a multitude of factors, including, but not limited to, the number
+   of clients interacting with a particular mirror, whether or not the
+   mirror is trustworthy, and application requirements for dealing with
+   consistency check failures.
 
-   [[OPEN ISSUE: Can mirrors somehow communicate the number of “active
-   users” to clients?  How would mirrors determine client uniqueness?
-   And finally, if mirrors did this accurately, how would clients use
-   this information?]]
+   In many of these systems where the mirror protocol might be used,
+   including common configurations for Privacy Pass and OHTTP, there is
+   already a party who is necessarily trusted to protect the user's
+   privacy, and whose operational availability is already a prerequisite
+   for using the system.  In OHTTP, this is the Relay; in Privacy Pass
+   it might be the Attester (in Split Mode) or a transport proxy.
+
+   When such a party exists, it is RECOMMENDED that they operate a
+   mirror service for their users, and that clients do not use any other
+   mirrors for the purposes of consistency checks.  This avoids
+   revealing any metadata about the client's activity to additional
+   parties and reduces the likelihood of an outage.  More information
+   for implementing this check in the context of Privacy Pass and OHTTP
+   is provided in Section 5.1 and Section 5.2, respectively.
+
+   In some cases, this trusted party can provide consistency enforcement
+   through a protocol-specific mechanism (e.g.,
+   [I-D.pw-privacypass-in-band-consistency] for Privacy Pass in Split
+   Mode).  Protocol-specific consistency mechanisms may be preferable to
+   protocol-agnostic consistency checks based on the mirror protocol,
+   especially if they provide equivalent consistency guarantees with
+   better performance or reliability.
 
 5.1.  Privacy Pass Profile
 
@@ -329,12 +353,13 @@ accept = application/private-token-issuer-directory
    identifier be token_key_id.  Clients are also given as input the name
    of the issuer, from which they can construct the target URL for the
    issuer directory.  If clients have already checked this issuer’s
-   token key, i.e., they’ve previously run K-Check, they can simply
-   reuse the result up to its expiration.  Otherwise, clients invoke
-   K-Check in parallel with the issuance protocol.
+   token key, i.e., they’ve previously run a consistency check, they can
+   simply reuse the result up to its expiration.  Otherwise, clients
+   invoke a mirror-based consistency check in parallel with the issuance
+   protocol.
 
    Each issuer directory can yield one or more normalized
-   representations that clients use in the K-Check protocol.  For
+   representations that clients use in the consistency check.  For
    example, given a mirrored token directory resource like the
    following:
 
@@ -362,8 +387,9 @@ accept = application/private-token-issuer-directory
 
 5.2.  Oblivious HTTP Profile
 
-   Clients can run K-Check for OHTTP in several ways depending on the
-   deployment.  In practice, common deployments are as follows:
+   Clients can run consistency checks for OHTTP in several ways
+   depending on the deployment.  In practice, common deployments are as
+   follows:
 
    1.  Clients are configured with gateway configurations; and
 
@@ -373,42 +399,15 @@ accept = application/private-token-issuer-directory
    check it for consistency.  In OHTTP, there is exactly one
    representation for a gateway configuration – the configuration
    itself.  Before using the configuration to encrypt a binary HTTP
-   message to the gateway, clients can run K-Check with their configured
-   mirrors to ensure that this configuration is correct for the given
-   gateway.
+   message to the gateway, clients can run a consistency check with
+   their configured mirror(s) to ensure that this configuration is
+   correct for the given gateway.
 
-6.  Integrated Mirrors
+6.  Security Considerations
 
-   As discussed in Section 1, K-Check's design is motivated by a
-   requirement in various systems to protect the user's privacy by
-   ensuring that they remain in a sufficiently large anonymity set.
-   Mirror availability is also important, so that users do not lose
-   access to the system.
-
-   In many of these systems, including common configurations for
-   Oblivious HTTP and Privacy Pass, there is already a party who is
-   necessarily trusted to protect the user's privacy in this way, and
-   whose operational availability is already a prerequisite for using
-   the system.  In Oblivious HTTP, this is the Relay; in Privacy Pass it
-   might be the Attester (in Split Mode) or a transport proxy.
-
-   When such a party exists, it is RECOMMENDED that they operate a
-   mirror service for their users and K is set to 1.  This avoids
-   revealing any metadata about the client's activity to additional
-   parties and reduces the likelihood of an outage.
-
-   In some cases, this trusted party can provide consistency enforcement
-   through a protocol-specific mechanism (e.g.,
-   [I-D.pw-privacypass-in-band-consistency] for Privacy Pass in Split
-   Mode).  Protocol-specific consistency mechanisms may be preferable to
-   K-Check, if they provide equivalent consistency guarantees with
-   better performance or reliability.
-
-7.  Security Considerations
-
-   K-Check assumes that at least one client-configured mirror is honest.
-   Under this assumption, the consistency properties of K-Check are as
-   follows:
+   Consistency checks assume that the client-configured set of mirrors
+   is honest.  Under this assumption, the consistency properties of
+   consistency checks based on the mirror protocol are as follows:
 
    1.  With honest mirrors, clients that successfully check a resource
        are assured that they share the same copy of the resource with
@@ -418,20 +417,21 @@ accept = application/private-token-issuer-directory
        mirror validity window.
 
    3.  With at least one dishonest mirror, the probability of
-       discovering an inconsistency is 1 - (1 / 2^(k-1)).  This is the
-       probability that each individual mirror check succeeds in the
-       mirror protocol.
+       discovering an inconsistency is 1 - (1 / 2^(k-1)), where k is the
+       number of disjoint consistency checks.  This is the probability
+       that each individual consistency check succeeds.
 
-   Unless all clients share the same configured mirrors, K-Check does
-   not achieve global consistency as is defined in [CONSISTENCY].
+   Unless all clients share the same configured mirrors, consistency
+   checks using the mirror protocol do not achieve global consistency as
+   is defined in [CONSISTENCY].
 
-8.  IANA Considerations
+7.  IANA Considerations
 
    This document has no IANA actions.
 
-9.  References
+8.  References
 
-9.1.  Normative References
+8.1.  Normative References
 
    [BHTTP]    Thomson, M. and C. A. Wood, "Binary Representation of HTTP
               Messages", RFC 9292, DOI 10.17487/RFC9292, August 2022,
@@ -477,7 +477,7 @@ accept = application/private-token-issuer-directory
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-9.2.  Informative References
+8.2.  Informative References
 
    [CACHING]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Caching", STD 98, RFC 9111,
