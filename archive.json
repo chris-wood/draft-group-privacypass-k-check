@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-09-24T00:20:09.953758+00:00",
+  "timestamp": "2023-09-26T00:18:50.562455+00:00",
   "repo": "chris-wood/draft-group-privacypass-k-check",
   "labels": [
     {
@@ -152,7 +152,7 @@
       "labels": [],
       "body": "For some use cases, it is useful to be able to fetch multiple configurations at the same time to reduce the number of fetches/ensure consistency across multiple resources.\r\n\r\nThis tracks adding a batched mode for the client to request a bundle/batch of resource requests.",
       "createdAt": "2023-08-07T15:58:20Z",
-      "updatedAt": "2023-08-17T14:04:53Z",
+      "updatedAt": "2023-09-25T15:58:53Z",
       "closedAt": null,
       "comments": [
         {
@@ -182,6 +182,13 @@
           "body": "My gut is that at scale, one resource request vs 11 (assuming around 10 issuer configurations) would have a substantial impact on latency and bandwidth for the K-check service (and caching) even with parallel requests. Though maybe CDNs have already solved some of the caching/bandwidth issues (local caching of results?) that K-check servers can rely on?",
           "createdAt": "2023-08-17T14:04:53Z",
           "updatedAt": "2023-08-17T14:04:53Z"
+        },
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "NONE",
+          "body": "We discussed this again today. Although it does seem like a common use case per https://github.com/chris-wood/draft-group-privacypass-k-check/issues/7#issuecomment-1682349612, H3 will help per https://github.com/chris-wood/draft-group-privacypass-k-check/issues/7#issuecomment-1669775776. \r\n\r\n@dvorak42  are you ok deferring this feature to keep the spec simpler in its initial iteration?",
+          "createdAt": "2023-09-25T15:58:52Z",
+          "updatedAt": "2023-09-25T15:58:52Z"
         }
       ]
     },
@@ -221,15 +228,15 @@
       "id": "I_kwDOJv72Bc5wTmOc",
       "title": "Incorrect statement about Mirror's response format",
       "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sysrqb",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "```\r\nOtherwise, the response to a mirror request is the content that was contained in the target resource. \r\n```\r\n\r\nThis conflicts with the later statement that the response is encoded using BHTTP. Probably we should just delete this sentence.",
       "createdAt": "2023-09-06T14:49:30Z",
-      "updatedAt": "2023-09-06T14:49:30Z",
-      "closedAt": null,
+      "updatedAt": "2023-09-25T14:46:43Z",
+      "closedAt": "2023-09-25T14:46:43Z",
       "comments": []
     },
     {
@@ -244,12 +251,12 @@
       "labels": [],
       "body": "The client may not have a mechanism for verifying that a configuration is authentic - only consistent within the assumptions of the design. For Privacy Pass, the client already processes a cryptographic key from which it derives the keyid and the client trusts that its set of K-Check mirrors won't collude with the origin. A similar situation exists with other profiles, such as OHTTP.\r\n\r\nOne suggestion we received is requiring self-authenticating configurations.",
       "createdAt": "2023-09-06T15:28:35Z",
-      "updatedAt": "2023-09-18T20:03:06Z",
+      "updatedAt": "2023-09-25T19:35:42Z",
       "closedAt": null,
       "comments": [
         {
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "Specifically, K-Check appears to weaken the security of OHTTP.  Normally, OHTTP guarantees authenticity and privacy as long as at least one of the proxy or the gateway is well-behaved.  With K-Check, authenticity and privacy can fail even if the gateway is well-behaved, if the K-Check mirrors collude to impersonate the gateway.\r\n\r\nEDIT: I think the most practical solution to this is to simply note the problem and recommend that K-Check only be used with self-authenticating resources.  A more aggressive solution would be to specify JSON Web Signature or HTTP Signed Exchange as the supported resource type.",
           "createdAt": "2023-09-08T16:09:41Z",
           "updatedAt": "2023-09-08T16:11:15Z"
@@ -263,7 +270,7 @@
         },
         {
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "> The underlying assumption here is that the client was pre-configured with the gateway's key configuration\r\n\r\nTo be precise, I'm imagining \"normal OHTTP\" to work by pre-configuring the client with a URL for the gateway's key configuration, which the client fetches over an authenticated transport (i.e. \"direct discovery\").  As written, the K-Check document seems to _replace_ this step, by fetching via the mirror pool.  If the intention is instead to _augment_ the authenticated fetch, the document should say so.  However, that would be very similar to DoubleCheck, and raises some of the same issues:\r\n\r\n1. Direct discovery (without a transport proxy with a suitable trust model) reveals the client IP addresses to the gateway.  While this doesn't directly break the unlinkability guarantees, it creates a significant weakness when joined with external behavioral profiles (see also #15), and a near-total break if timing correlations are present (i.e., config fetch immediately precedes config use, see #14).\r\n2. Direct discovery exacerbates the [Thundering Herd problem](https://datatracker.ietf.org/doc/html/draft-schwartz-ohai-consistency-doublecheck-03#name-thundering-herds) when the target resource changes.",
           "createdAt": "2023-09-18T14:20:38Z",
           "updatedAt": "2023-09-18T14:20:38Z"
@@ -277,7 +284,7 @@
         },
         {
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "OK, thanks for the explanation.  For this issue, I think it would be sufficient to clarify that in the document.\r\n\r\nAs noted in #16, I'm not sure it's always a good idea to draw a total abstraction boundary between correctness and consistency.  If the correctness validation procedure (or subsequent use) relies on a privacy proxy, then the K-Check procedure can safely be simplified to K=1, with improved privacy.",
           "createdAt": "2023-09-18T16:53:01Z",
           "updatedAt": "2023-09-18T16:53:01Z"
@@ -291,10 +298,17 @@
         },
         {
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "I'm totally OK with defining K-Check (or perhaps the Mirror Protocol) as a limited-purpose component that is separate from authentication and usage of the resource.  Currently, the draft is not clear on that point; I came away with the impression that K-Check was also being used for authentication (which it does provide under certain, slightly worrying security assumptions).\r\n\r\nI do think that usage of K-Check is actually not as independent from the protocol as the current text implies, but that's a topic for a different issue.",
           "createdAt": "2023-09-18T20:03:05Z",
           "updatedAt": "2023-09-18T20:03:05Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "@sysrqb do we want to keep this open? I think self-certifying configurations are somewhat orthogonal to the core work here. ",
+          "createdAt": "2023-09-25T19:35:42Z",
+          "updatedAt": "2023-09-25T19:35:42Z"
         }
       ]
     },
@@ -321,12 +335,12 @@
       "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/issues/14",
       "state": "OPEN",
       "author": "bemasc",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "K-Check is designed to improve in ~privacy~ resistance to active attack as K (or the threshold `t`) increases.  However, if a timing correlation is present (e.g., the client fetches an OHTTP config immediately before using it), increasing K ~actually reduces privacy~ increases vulnerability to a passive attack on the user's privacy, because any single colluding mirror can reveal the client IP to the gateway.  Adding more mirrors increases the likelihood that one of them is malicious.\r\n\r\nIf timing attacks are present in the use case, I think the optimal value of K is likely to be 1.\r\n\r\nIn some use cases, timing correlations are present for some requests (e.g., the first request issued when the configuration is not locally in cache) but not others.  In these cases, it might make sense to perform a single check (K=1) initially, and then perform more checks asynchronously (according to some randomized schedule) to catch if the initial mirror was colluding and served a targeted resource.\r\n\r\nThese issues can be avoided by tunneling K-Check through a trusted proxy, but if a trusted proxy exists then it can run the Mirror Protocol itself and K > 1 is unnecessary (see #16).",
       "createdAt": "2023-09-18T13:53:09Z",
-      "updatedAt": "2023-09-20T19:50:33Z",
+      "updatedAt": "2023-09-25T19:34:28Z",
       "closedAt": null,
       "comments": [
         {
@@ -338,7 +352,7 @@
         },
         {
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "I've adjusted the issue description to be more precise, and avoid assuming that privacy is the only reason to pursue consistency.",
           "createdAt": "2023-09-20T18:45:38Z",
           "updatedAt": "2023-09-20T18:45:38Z"
@@ -352,10 +366,17 @@
         },
         {
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "OK, I'll try to make it concrete.  A hypothetical example:\r\n\r\nI am the moderator of a subreddit.  I'm trying to maintain my privacy, so my login handle is not identifying.  Once every day or two, I publish a comment in the subreddit using OHTTP through a trustworthy Relay.\r\n\r\nA hostile actor would like to know my IP address.  Reddit doesn't know, and the Relay won't share.  However, Reddit's gateway config expires after 60 minutes, so almost every time I post an update, my client app needs to refresh its consistency check first.  That requires pinging K different mirrors, asking for Reddit's gateway config.  Let's say K=10.\r\n\r\nIt turns out that one of those 10 mirrors is compromised by the hostile actor.  By correlating requests for the gateway config with my post timestamps, it can identify the IP address that always asked for this resource immediately before my posts appeared.  That's my IP address.\r\n\r\nThe risk of one mirror being compromised increases in proportion to K.  Similar proportional risks apply to correlation attacks using passive network monitoring, which become more likely as your requests traverse more paths.",
           "createdAt": "2023-09-20T19:50:33Z",
           "updatedAt": "2023-09-20T19:50:33Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "OK, so this _is_ an attack on privacy \ud83d\udc4d We can certainly note that the probability of such a thing increases as K increases.",
+          "createdAt": "2023-09-25T19:34:27Z",
+          "updatedAt": "2023-09-25T19:34:27Z"
         }
       ]
     },
@@ -388,15 +409,15 @@
       "id": "I_kwDOJv72Bc5xUDiP",
       "title": "Recommend K=1 for certain use cases",
       "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/issues/16",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The K-Check protocol is described as an abstract, general-purpose consistency protocol, and in that context it makes sense for K to be a free parameter.  However, in specific use cases there may be particular values of K that make sense.  If the client's privacy protection is already subject to a Single Point of Failure, then the optimal value for K is 1, i.e. a mirror operated by the SPOF.\r\n\r\nFor example, in OHTTP, increasing K does not provide increased privacy protection, because a malicious Relay can break the privacy guarantee even if consistency is preserved.  Increasing K can even reduce privacy protection (see #14, #15).\r\n\r\nAccordingly, the draft should note some cases where K=1 is recommended.",
       "createdAt": "2023-09-18T14:33:44Z",
-      "updatedAt": "2023-09-20T19:07:21Z",
-      "closedAt": null,
+      "updatedAt": "2023-09-25T18:39:52Z",
+      "closedAt": "2023-09-25T18:39:52Z",
       "comments": [
         {
           "author": "chris-wood",
@@ -407,10 +428,34 @@
         },
         {
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "I do think there is a generally applicable recommendation here.  I've written it up in #17.",
           "createdAt": "2023-09-20T19:07:20Z",
           "updatedAt": "2023-09-20T19:07:20Z"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOJv72Bc5x8-ff",
+      "title": "Discuss behavior on failed consistency checks",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/issues/18",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "If you check only one mirror, and consistency fails, you can check another mirror, etc. However, the behavior when you end up with inconsistency in general, the client application needs local policy on what to do.\r\n\r\n- If the feature that is inconsistent is optional, the client can just not do it. (Privacy pass helps avoid captchas, but if the key is not consistent, just don't use privacy pass, and show the captcha)\r\n- If the feature is required, but there is a fallback option, use that. (Use a different privacy pass provider, use a different OHTTP/ODoH server, one that is consistent).\r\n- If the feature is required, and all options are inconsistent, fail hard and/or throw an alert. (Private relay would declare an outage if all ODoH servers had invalid keys)",
+      "createdAt": "2023-09-25T15:48:01Z",
+      "updatedAt": "2023-09-25T15:52:38Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Add a new section before security considerations",
+          "createdAt": "2023-09-25T15:52:37Z",
+          "updatedAt": "2023-09-25T15:52:37Z"
         }
       ]
     }
@@ -873,24 +918,26 @@
       "id": "PR_kwDOJv72Bc5ag9Ym",
       "title": "Fix a few sentences that cause confusion, and fix a typo",
       "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/pull/12",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "sysrqb",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Closes #9 ",
       "createdAt": "2023-09-17T20:29:21Z",
-      "updatedAt": "2023-09-18T15:34:57Z",
+      "updatedAt": "2023-09-25T14:46:42Z",
       "baseRepository": "chris-wood/draft-group-privacypass-k-check",
       "baseRefName": "main",
       "baseRefOid": "57dd72defef1180f256bde8a29171b365366dce3",
       "headRepository": "sysrqb/draft-group-privacypass-k-check",
       "headRefName": "readability-improvements",
       "headRefOid": "b9efb2bfbaeb070c70ed310bee7bef418a89b537",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-09-25T14:46:42Z",
+      "mergedAt": "2023-09-25T14:46:42Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "1a3aba485acfe582269dee43b48a65ccfa6f7090"
+      },
       "comments": [],
       "reviews": [
         {
@@ -939,24 +986,26 @@
       "id": "PR_kwDOJv72Bc5a0JNd",
       "title": "Add a section discussing K=1 cases",
       "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/pull/17",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Closes #16",
       "createdAt": "2023-09-20T19:05:25Z",
-      "updatedAt": "2023-09-21T14:35:32Z",
+      "updatedAt": "2023-09-25T18:39:51Z",
       "baseRepository": "chris-wood/draft-group-privacypass-k-check",
       "baseRefName": "main",
       "baseRefOid": "57dd72defef1180f256bde8a29171b365366dce3",
       "headRepository": "bemasc/draft-group-privacypass-k-check",
       "headRefName": "patch-1",
-      "headRefOid": "744348543feadba7850272fa0da016f659079de8",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "639af5d702e536f8bf862e1e2bb1cdb2f7847877",
+      "closedAt": "2023-09-25T18:39:51Z",
+      "mergedAt": "2023-09-25T18:39:51Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "91642013c071a89348b6b21e929ccaa127fe0c32"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1005,7 +1054,7 @@
             "abbreviatedOid": "f9af101"
           },
           "author": "bemasc",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-09-20T19:19:06Z",
@@ -1022,6 +1071,119 @@
               "body": "In this text, I only mean that K=1 doesn't make security worse.  That said, I think increasing K does impair security in this situation, where we have an integrated mirror whose good behavior is already a requirement:\r\n\r\n* In a threshold model,`t > 1` makes the client more vulnerable to denial of service attacks.\r\n* The other mirrors are untrusted, so any risk of collusion attacks (i.e., attacks on consistency) is additional risk here (unless the integrated mirror is on the list and `t == K`, in which case outages/DoS are more likely).",
               "createdAt": "2023-09-20T19:26:21Z",
               "updatedAt": "2023-09-20T19:27:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJv72Bc5h5MFi",
+          "commit": {
+            "abbreviatedOid": "7443485"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-09-25T15:00:29Z",
+          "updatedAt": "2023-09-25T15:01:18Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "```suggestion\r\nsufficiently large anonymity set.  Mirror availability is also important, so\r\nthat users do not lose access to the system.\r\n```",
+              "createdAt": "2023-09-25T15:00:29Z",
+              "updatedAt": "2023-09-25T15:01:18Z"
+            },
+            {
+              "originalPosition": 20,
+              "body": "```suggestion\r\nthe client's activity to additional parties and reduces the likelihood of an outage.\r\n```\r\nas \"impair security or privacy\" requires more text, so the simpler thing seems to just be deleting it altogether.",
+              "createdAt": "2023-09-25T15:01:16Z",
+              "updatedAt": "2023-09-25T15:01:18Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDOJv72Bc5bKOzG",
+      "title": "Simplify to K=1 and somewhat punt consistency policies to the application",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/pull/19",
+      "state": "OPEN",
+      "author": "chris-wood",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This partly addresses #11 and #14, but not entirely. We need some more considerations about timing correlations, application policies for dealing with consistency check failures, and so on before those issues are resolved.",
+      "createdAt": "2023-09-25T19:37:06Z",
+      "updatedAt": "2023-09-25T20:30:11Z",
+      "baseRepository": "chris-wood/draft-group-privacypass-k-check",
+      "baseRefName": "main",
+      "baseRefOid": "91642013c071a89348b6b21e929ccaa127fe0c32",
+      "headRepository": "chris-wood/draft-group-privacypass-k-check",
+      "headRefName": "caw/k-is-one",
+      "headRefOid": "f0ad6423441907057467e111aedc8f1925b24e1b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJv72Bc5h7DSy",
+          "commit": {
+            "abbreviatedOid": "f0ad642"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-09-25T19:38:46Z",
+          "updatedAt": "2023-09-25T19:39:20Z",
+          "comments": [
+            {
+              "originalPosition": 98,
+              "body": "Which considerations? Is this a place to link to failure considerations in a later section?",
+              "createdAt": "2023-09-25T19:38:46Z",
+              "updatedAt": "2023-09-25T19:39:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJv72Bc5h7DuY",
+          "commit": {
+            "abbreviatedOid": "f0ad642"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-09-25T19:40:05Z",
+          "updatedAt": "2023-09-25T19:40:05Z",
+          "comments": [
+            {
+              "originalPosition": 98,
+              "body": "It could be a link to the failure considerations or they could be inlined here, yeah. Whatever reads better.",
+              "createdAt": "2023-09-25T19:40:05Z",
+              "updatedAt": "2023-09-25T19:40:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJv72Bc5h7UjQ",
+          "commit": {
+            "abbreviatedOid": "f0ad642"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-09-25T20:30:11Z",
+          "updatedAt": "2023-09-25T20:30:11Z",
+          "comments": [
+            {
+              "originalPosition": 98,
+              "body": "Got it",
+              "createdAt": "2023-09-25T20:30:11Z",
+              "updatedAt": "2023-09-25T20:30:11Z"
             }
           ]
         }
