@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-09-26T00:18:50.562455+00:00",
+  "timestamp": "2023-09-28T00:18:58.218786+00:00",
   "repo": "chris-wood/draft-group-privacypass-k-check",
   "labels": [
     {
@@ -993,7 +993,7 @@
       "labels": [],
       "body": "Closes #16",
       "createdAt": "2023-09-20T19:05:25Z",
-      "updatedAt": "2023-09-25T18:39:51Z",
+      "updatedAt": "2023-09-26T14:19:19Z",
       "baseRepository": "chris-wood/draft-group-privacypass-k-check",
       "baseRefName": "main",
       "baseRefOid": "57dd72defef1180f256bde8a29171b365366dce3",
@@ -1107,24 +1107,26 @@
       "id": "PR_kwDOJv72Bc5bKOzG",
       "title": "Simplify to K=1 and somewhat punt consistency policies to the application",
       "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/pull/19",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "chris-wood",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "This partly addresses #11 and #14, but not entirely. We need some more considerations about timing correlations, application policies for dealing with consistency check failures, and so on before those issues are resolved.",
       "createdAt": "2023-09-25T19:37:06Z",
-      "updatedAt": "2023-09-25T20:30:11Z",
+      "updatedAt": "2023-09-26T19:25:09Z",
       "baseRepository": "chris-wood/draft-group-privacypass-k-check",
       "baseRefName": "main",
       "baseRefOid": "91642013c071a89348b6b21e929ccaa127fe0c32",
       "headRepository": "chris-wood/draft-group-privacypass-k-check",
       "headRefName": "caw/k-is-one",
       "headRefOid": "f0ad6423441907057467e111aedc8f1925b24e1b",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-09-26T19:25:09Z",
+      "mergedAt": "2023-09-26T19:25:09Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "a0658d1d39b7bee93f7802e103bc5be79a254642"
+      },
       "comments": [],
       "reviews": [
         {
