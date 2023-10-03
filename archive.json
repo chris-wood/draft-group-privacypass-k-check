@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-09-28T00:18:58.218786+00:00",
+  "timestamp": "2023-10-03T00:19:10.203823+00:00",
   "repo": "chris-wood/draft-group-privacypass-k-check",
   "labels": [
     {
@@ -152,7 +152,7 @@
       "labels": [],
       "body": "For some use cases, it is useful to be able to fetch multiple configurations at the same time to reduce the number of fetches/ensure consistency across multiple resources.\r\n\r\nThis tracks adding a batched mode for the client to request a bundle/batch of resource requests.",
       "createdAt": "2023-08-07T15:58:20Z",
-      "updatedAt": "2023-09-25T15:58:53Z",
+      "updatedAt": "2023-10-02T15:45:34Z",
       "closedAt": null,
       "comments": [
         {
@@ -189,6 +189,13 @@
           "body": "We discussed this again today. Although it does seem like a common use case per https://github.com/chris-wood/draft-group-privacypass-k-check/issues/7#issuecomment-1682349612, H3 will help per https://github.com/chris-wood/draft-group-privacypass-k-check/issues/7#issuecomment-1669775776. \r\n\r\n@dvorak42  are you ok deferring this feature to keep the spec simpler in its initial iteration?",
           "createdAt": "2023-09-25T15:58:52Z",
           "updatedAt": "2023-09-25T15:58:52Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "Another possible use case for batching is for DAP aggregator public keys, i.e., to ensure that clients have a consistent view of the aggregator keys. It might be necessary for these keys to be consistent for all aggregators at once, rather than individually for each aggregator.",
+          "createdAt": "2023-10-02T15:45:33Z",
+          "updatedAt": "2023-10-02T15:45:33Z"
         }
       ]
     },
