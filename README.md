@@ -1,6 +1,6 @@
-# The K-Check Protocol for HTTP Resource Consistency
+# Checking Resource Consistency with HTTP Mirrors
 
-This is the working area for the individual Internet-Draft, "The K-Check Protocol for HTTP Resource Consistency".
+This is the working area for the individual Internet-Draft, "Checking Resource Consistency with HTTP Mirrors".
 
 * [Editor's Copy](https://chris-wood.github.io/draft-group-privacypass-k-check/#go.draft-group-privacypass-k-check.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-group-privacypass-k-check)
