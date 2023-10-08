@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-03T00:19:10.203823+00:00",
+  "timestamp": "2023-10-08T00:20:40.456665+00:00",
   "repo": "chris-wood/draft-group-privacypass-k-check",
   "labels": [
     {
@@ -1197,6 +1197,34 @@
           ]
         }
       ]
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDOJv72Bc5cJVaL",
+      "title": "Explaining consistency failure handling",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-k-check/pull/20",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Closes #18",
+      "createdAt": "2023-10-06T20:02:14Z",
+      "updatedAt": "2023-10-06T20:02:14Z",
+      "baseRepository": "chris-wood/draft-group-privacypass-k-check",
+      "baseRefName": "main",
+      "baseRefOid": "22b5f14e6aad2a9bc942c83ff1a74de980641d77",
+      "headRepository": "chris-wood/draft-group-privacypass-k-check",
+      "headRefName": "tfpauly-patch-1",
+      "headRefOid": "c84485af96cd1fc051ac9724bddd52e6c0a6ffec",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
