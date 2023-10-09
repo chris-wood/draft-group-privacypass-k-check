@@ -10,11 +10,13 @@ Expires: 11 April 2024                                        Apple Inc.
                                                               Google LLC
                                                               C. A. Wood
                                                               Cloudflare
+                                                                T. Pauly
+                                                              Apple Inc.
                                                           9 October 2023
 
 
             Checking Resource Consistency with HTTP Mirrors
-                 draft-group-privacypass-k-check-latest
+           draft-group-privacypass-consistency-mirror-latest
 
 Abstract
 
@@ -32,7 +34,8 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-group-privacypass-k-check/.
+   https://datatracker.ietf.org/doc/draft-group-privacypass-consistency-
+   mirror/.
 
    Discussion of this document takes place on the Privacy Pass Working
    Group mailing list (mailto:privacy-pass@ietf.org), which is archived
@@ -556,3 +559,8 @@ Authors' Addresses
    Christopher A. Wood
    Cloudflare
    Email: caw@heapingbits.net
+
+
+   Tommy Pauly
+   Apple Inc.
+   Email: tpauly@apple.com
