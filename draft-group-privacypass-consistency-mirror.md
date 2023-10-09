@@ -3,7 +3,7 @@ title: "Checking Resource Consistency with HTTP Mirrors"
 abbrev: "Checking Resource Consistency with HTTP Mirrors"
 category: std
 
-docname: draft-group-privacypass-k-check-latest
+docname: draft-group-privacypass-consistency-mirror-latest
 submissiontype: IETF
 number:
 date:
@@ -42,6 +42,11 @@ author:
     name: Christopher A. Wood
     org: Cloudflare
     email: caw@heapingbits.net
+ -
+    ins: T. Pauly
+    name: Tommy Pauly
+    org: Apple Inc.
+    email: tpauly@apple.com
 
 normative:
   PRIVACYPASS: I-D.ietf-privacypass-architecture
