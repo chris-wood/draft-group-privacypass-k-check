@@ -264,10 +264,12 @@ with consistency check failures.
 
 ## Handling Consistency Failures
 
-If a consistency check fails, either because the request to the mirror failed or
-because the mirrored resource did not match, the client MUST NOT use the original resource.
-The client behavior for what to do instead can vary depending on the protocol, availability
-of alternative services, and client policy.
+If a consistency check fails because the mirrored resource did not match, the client
+MUST NOT use the original resource. For cases where the check failed because the
+client was unable to communicate with the mirror, client policy dictates whether or
+not to assume the resource is consistent. Client behavior for what to do in the case
+of inconsistency can vary depending on the protocol, availability of alternative services,
+and client policy.
 
 If the client has multiple options for equivalent services, it can choose to fall back
 from a service that failed a consistency check to one that passed all consistency checks.
