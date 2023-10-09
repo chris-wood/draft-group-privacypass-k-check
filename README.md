@@ -2,10 +2,10 @@
 
 This is the working area for the individual Internet-Draft, "Checking Resource Consistency with HTTP Mirrors".
 
-* [Editor's Copy](https://chris-wood.github.io/draft-group-privacypass-k-check/#go.draft-group-privacypass-k-check.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-group-privacypass-k-check)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-group-privacypass-k-check)
-* [Compare Editor's Copy to Individual Draft](https://chris-wood.github.io/draft-group-privacypass-k-check/#go.draft-group-privacypass-k-check.diff)
+* [Editor's Copy](https://chris-wood.github.io/draft-group-privacypass-k-check/#go.draft-group-privacypass-consistency-mirror.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-group-privacypass-consistency-mirror)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-group-privacypass-consistency-mirror)
+* [Compare Editor's Copy to Individual Draft](https://chris-wood.github.io/draft-group-privacypass-k-check/#go.draft-group-privacypass-consistency-mirror.diff)
 
 
 ## Contributing
