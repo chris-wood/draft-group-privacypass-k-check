@@ -262,7 +262,31 @@ factors, including, but not limited to, the number of clients interacting with a
 mirror, whether or not the mirror is trustworthy, and application requirements for dealing
 with consistency check failures.
 
-<!-- TODO: weave in considerations here -->
+## Handling Consistency Failures
+
+If a consistency check fails because the mirrored resource did not match, the client
+MUST NOT use the original resource. For cases where the check failed because the
+client was unable to communicate with the mirror, client policy dictates whether or
+not to assume the resource is consistent. Client behavior for what to do in the case
+of inconsistency can vary depending on the protocol, availability of alternative services,
+and client policy.
+
+If the client has multiple options for equivalent services, it can choose to fall back
+from a service that failed a consistency check to one that passed all consistency checks.
+For example, if a client has the option of using one of a set of Privacy Pass token
+issuers, it can choose an issuer that passes all consistency checks.
+
+If the service that failed the consistency check is an optional optimization for the client,
+the client can simply choose to not use the service. For example, if a Privacy Pass token is
+used to avoid showing the user a CAPTCHA, but the Privacy Pass token issuer fails the
+consistency check, the client can fall back to showing the user a CAPTCHA.
+
+For cases where the client has no alternate services to use, and the service is
+required in order to perform user-facing functionality, the client SHOULD report the
+error in a visible way that presents the error to the user or an administrator. This
+functionality can be similar to how invalid TLS certificates are reported.
+
+## Selecting Mirror Servers
 
 In many of these systems where the mirror protocol might be used, including common
 configurations for Privacy Pass and OHTTP, there is already a party who is necessarily
