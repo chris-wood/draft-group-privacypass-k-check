@@ -1452,10 +1452,12 @@ with consistency check failures.<a href="#section-5-3" class="pilcrow">¶</a></p
         <h3 id="name-handling-consistency-failur">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-handling-consistency-failur" class="section-name selfRef">Handling Consistency Failures</a>
         </h3>
-<p id="section-5.1-1">If a consistency check fails, either because the request to the mirror failed or
-because the mirrored resource did not match, the client <span class="bcp14">MUST NOT</span> use the original resource.
-The client behavior for what to do instead can vary depending on the protocol, availability
-of alternative services, and client policy.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">If a consistency check fails because the mirrored resource did not match, the client
+<span class="bcp14">MUST NOT</span> use the original resource. For cases where the check failed because the
+client was unable to communicate with the mirror, client policy dictates whether or
+not to assume the resource is consistent. Client behavior for what to do in the case
+of inconsistency can vary depending on the protocol, availability of alternative services,
+and client policy.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">If the client has multiple options for equivalent services, it can choose to fall back
 from a service that failed a consistency check to one that passed all consistency checks.
 For example, if a client has the option of using one of a set of Privacy Pass token
