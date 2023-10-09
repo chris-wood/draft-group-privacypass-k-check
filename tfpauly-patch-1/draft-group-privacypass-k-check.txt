@@ -5,12 +5,12 @@
 Privacy Pass                                               B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Standards Track                               M. Finkel
-Expires: 8 April 2024                                         Apple Inc.
+Expires: 11 April 2024                                        Apple Inc.
                                                                S. Valdez
                                                               Google LLC
                                                               C. A. Wood
                                                               Cloudflare
-                                                          6 October 2023
+                                                          9 October 2023
 
 
             Checking Resource Consistency with HTTP Mirrors
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 April 2024.
+   This Internet-Draft will expire on 11 April 2024.
 
 Copyright Notice
 
@@ -347,7 +347,7 @@ accept = application/private-token-issuer-directory
 
    For cases where the client has no alternate services to use, and the
    service is required in order to perform user-facing functionality,
-   the client SHOULD report the error in a visible way the presents the
+   the client SHOULD report the error in a visible way that presents the
    error to the user or an administrator.  This functionality can be
    similar to how invalid TLS certificates are reported.
 
