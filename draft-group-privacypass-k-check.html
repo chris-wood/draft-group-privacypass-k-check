@@ -17,26 +17,26 @@ protocol-specific resource (typically, a public key) for security or privacy rea
 including Privacy Pass and Oblivious HTTP. To that end, this document also describes how
 to use the mirror protocol to implement these consistency checks. 
     " name="description">
-<meta content="xml2rfc 3.18.0" name="generator">
+<meta content="xml2rfc 3.18.1" name="generator">
 <meta content="HTTP" name="keyword">
 <meta content="consistency check" name="keyword">
 <meta content="mirror" name="keyword">
 <meta content="draft-group-privacypass-k-check-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.0
+  xml2rfc 3.18.1
     Python 3.11.5
     ConfigArgParse 1.5.3
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.10.0
+    platformdirs 3.11.0
     pycountry 22.3.5
     PyYAML 6.0
     requests 2.31.0
     setuptools 67.7.2
     six 1.16.0
-    wcwidth 0.2.6
+    wcwidth 0.2.8
 -->
 <link href="draft-group-privacypass-k-check.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1035,11 +1035,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Checking Resource Consistency with HTTP </td>
-<td class="right">September 2023</td>
+<td class="right">October 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Beurdouche, et al.</td>
-<td class="center">Expires 29 March 2024</td>
+<td class="center">Expires 11 April 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1052,12 +1052,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-group-privacypass-k-check-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-09-26" class="published">26 September 2023</time>
+<time datetime="2023-10-09" class="published">9 October 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-03-29">29 March 2024</time></dd>
+<dd class="expires"><time datetime="2024-04-11">11 April 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1123,7 @@ to use the mirror protocol to implement these consistency checks.<a href="#secti
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 March 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1173,10 +1173,16 @@ to use the mirror protocol to implement these consistency checks.<a href="#secti
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-using-mirrors-for-consisten" class="internal xref">Using Mirrors for Consistency Checks</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-privacy-pass-profile" class="internal xref">Privacy Pass Profile</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-handling-consistency-failur" class="internal xref">Handling Consistency Failures</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-oblivious-http-profile" class="internal xref">Oblivious HTTP Profile</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-selecting-mirror-servers" class="internal xref">Selecting Mirror Servers</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-privacy-pass-profile" class="internal xref">Privacy Pass Profile</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-oblivious-http-profile" class="internal xref">Oblivious HTTP Profile</a></p>
 </li>
             </ul>
 </li>
@@ -1236,7 +1242,7 @@ consistency criteria. For example, the mirror protocol can be run once with a tr
 or more than once with many, potentially less trusted mirrors, and used for determining
 consistency. <a href="#integration" class="auto internal xref">Section 5</a> provides general guidance for using the mirror protocol for
 consistency checks, along with specific profiles of the protocol for Privacy Pass and OHTTP
-in <a href="#profile-privacypass" class="auto internal xref">Section 5.1</a> and <a href="#profile-ohttp" class="auto internal xref">Section 5.2</a>, respectively.<a href="#section-1-4" class="pilcrow">¶</a></p>
+in <a href="#profile-privacypass" class="auto internal xref">Section 5.3</a> and <a href="#profile-ohttp" class="auto internal xref">Section 5.4</a>, respectively.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1257,13 +1263,16 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <p id="section-3-1">The following terms are used throughout this document:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-2.1">Resource: A HTTP resource identified by a URL.<a href="#section-3-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3-2.1">
+          <p id="section-3-2.1.1">Resource: A HTTP resource identified by a URL.<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-2.2">Normalized resource representation: A unique or otherwise protocol-specific representation
+        <li class="normal" id="section-3-2.2">
+          <p id="section-3-2.2.1">Normalized resource representation: A unique or otherwise protocol-specific representation
 that is derived from an HTTP resource. The process of normalization is specific to a
-protocol and the resource in question.<a href="#section-3-2.2" class="pilcrow">¶</a>
+protocol and the resource in question.<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-2.3">Mirror: A HTTP resource that fetches and caches HTTP resources.<a href="#section-3-2.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-3-2.3">
+          <p id="section-3-2.3.1">Mirror: A HTTP resource that fetches and caches HTTP resources.<a href="#section-3-2.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1301,9 +1310,11 @@ fetch arbitrary resources. One way to implement this check is via an allowlist o
 resource identified by the target URL. Mirrors can provide a cached response to a client request
 if the following criteria are met:<a href="#section-4-7" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4-8">
-<li id="section-4-8.1">The target URL matches that of a cached response.<a href="#section-4-8.1" class="pilcrow">¶</a>
+<li id="section-4-8.1">
+          <p id="section-4-8.1.1">The target URL matches that of a cached response.<a href="#section-4-8.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-4-8.2">The cached response is fresh according to its Cache-Control header (see <span><a href="https://rfc-editor.org/rfc/rfc9111#section-4.2" class="relref">Section 4.2</a> of [<a href="#CACHING" class="cite xref">CACHING</a>]</span>).<a href="#section-4-8.2" class="pilcrow">¶</a>
+        <li id="section-4-8.2">
+          <p id="section-4-8.2.1">The cached response is fresh according to its Cache-Control header (see <span><a href="https://rfc-editor.org/rfc/rfc9111#section-4.2" class="relref">Section 4.2</a> of [<a href="#CACHING" class="cite xref">CACHING</a>]</span>).<a href="#section-4-8.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <p id="section-4-9">If both criteria are met, the mirror encodes the cached response using Binary HTTP <span>[<a href="#BHTTP" class="cite xref">BHTTP</a>]</span>
@@ -1314,11 +1325,13 @@ the client request if present. If this request fails, the mirror returns a 4xx e
 If this request suceeeds, the mirror checks it for validity. The response is considered valid and stored
 in the mirror's cache if the following criteria are met:<a href="#section-4-10" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4-11">
-<li id="section-4-11.1">The response can be cached according to the rules in <span><a href="https://rfc-editor.org/rfc/rfc9111#section-3" class="relref">Section 3</a> of [<a href="#CACHING" class="cite xref">CACHING</a>]</span>. In particular,
-if the request had a Vary header, this is used in determining whether the mirror's response is valid.<a href="#section-4-11.1" class="pilcrow">¶</a>
+<li id="section-4-11.1">
+          <p id="section-4-11.1.1">The response can be cached according to the rules in <span><a href="https://rfc-editor.org/rfc/rfc9111#section-3" class="relref">Section 3</a> of [<a href="#CACHING" class="cite xref">CACHING</a>]</span>. In particular,
+if the request had a Vary header, this is used in determining whether the mirror's response is valid.<a href="#section-4-11.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-4-11.2">The Cache-Control header is present, has a "max-age" response directive that is
-greater than or equal to MIN_VALIDITY_WINDOW, and does not have a "no-store" or "private" directive.<a href="#section-4-11.2" class="pilcrow">¶</a>
+        <li id="section-4-11.2">
+          <p id="section-4-11.2.1">The Cache-Control header is present, has a "max-age" response directive that is
+greater than or equal to MIN_VALIDITY_WINDOW, and does not have a "no-store" or "private" directive.<a href="#section-4-11.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <p id="section-4-12">Mirrors purge this cache when the response is no longer valid according to the
@@ -1418,53 +1431,88 @@ resource. In particular, in possession of the target URL at which the resource
 was obtained, as well as an authoritative representation of the resource, clients
 can check to see if this resource is consistent with that of the mirror's as follows:<a href="#section-5-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5-2">
-<li id="section-5-2.1">Send a mirror request to the mirror for the target URL. If the request fails, fail
-this consistency check.<a href="#section-5-2.1" class="pilcrow">¶</a>
+<li id="section-5-2.1">
+          <p id="section-5-2.1.1">Send a mirror request to the mirror for the target URL. If the request fails, fail
+this consistency check.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-5-2.2">Otherwise, compute the first valid representation of the resource based on the mirror's response.<a href="#section-5-2.2" class="pilcrow">¶</a>
+        <li id="section-5-2.2">
+          <p id="section-5-2.2.1">Otherwise, compute the first valid representation of the resource based on the mirror's response.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-5-2.3">Compare the computed representation to the input resource representation. If they do not match,
-fail this consistency check. Otherwise, this consistency check succeeds.<a href="#section-5-2.3" class="pilcrow">¶</a>
+        <li id="section-5-2.3">
+          <p id="section-5-2.3.1">Compare the computed representation to the input resource representation. If they do not match,
+fail this consistency check. Otherwise, this consistency check succeeds.<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <p id="section-5-3">The benefits of using the mirror protocol to check consistency depend on a multitude of
 factors, including, but not limited to, the number of clients interacting with a particular
 mirror, whether or not the mirror is trustworthy, and application requirements for dealing
 with consistency check failures.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">In many of these systems where the mirror protocol might be used, including common
+<div id="handling-consistency-failures">
+<section id="section-5.1">
+        <h3 id="name-handling-consistency-failur">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-handling-consistency-failur" class="section-name selfRef">Handling Consistency Failures</a>
+        </h3>
+<p id="section-5.1-1">If a consistency check fails because the mirrored resource did not match, the client
+<span class="bcp14">MUST NOT</span> use the original resource. For cases where the check failed because the
+client was unable to communicate with the mirror, client policy dictates whether or
+not to assume the resource is consistent. Client behavior for what to do in the case
+of inconsistency can vary depending on the protocol, availability of alternative services,
+and client policy.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">If the client has multiple options for equivalent services, it can choose to fall back
+from a service that failed a consistency check to one that passed all consistency checks.
+For example, if a client has the option of using one of a set of Privacy Pass token
+issuers, it can choose an issuer that passes all consistency checks.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">If the service that failed the consistency check is an optional optimization for the client,
+the client can simply choose to not use the service. For example, if a Privacy Pass token is
+used to avoid showing the user a CAPTCHA, but the Privacy Pass token issuer fails the
+consistency check, the client can fall back to showing the user a CAPTCHA.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">For cases where the client has no alternate services to use, and the service is
+required in order to perform user-facing functionality, the client <span class="bcp14">SHOULD</span> report the
+error in a visible way that presents the error to the user or an administrator. This
+functionality can be similar to how invalid TLS certificates are reported.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="selecting-mirror-servers">
+<section id="section-5.2">
+        <h3 id="name-selecting-mirror-servers">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-selecting-mirror-servers" class="section-name selfRef">Selecting Mirror Servers</a>
+        </h3>
+<p id="section-5.2-1">In many of these systems where the mirror protocol might be used, including common
 configurations for Privacy Pass and OHTTP, there is already a party who is necessarily
 trusted to protect the user's privacy, and whose operational availability is already a
 prerequisite for using the system. In OHTTP, this is the Relay; in Privacy Pass it might
-be the Attester (in Split Mode) or a transport proxy.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">When such a party exists, it is <span class="bcp14">RECOMMENDED</span> that they operate a mirror service
+be the Attester (in Split Mode) or a transport proxy.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">When such a party exists, it is <span class="bcp14">RECOMMENDED</span> that they operate a mirror service
 for their users, and that clients do not use any other mirrors for the purposes of
 consistency checks. This avoids revealing any metadata about the client's activity
 to additional parties and reduces the likelihood of an outage. More information for
 implementing this check in the context of Privacy Pass and OHTTP is provided in
-<a href="#profile-privacypass" class="auto internal xref">Section 5.1</a> and <a href="#profile-ohttp" class="auto internal xref">Section 5.2</a>, respectively.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">In some cases, this trusted party can provide consistency enforcement through
+<a href="#profile-privacypass" class="auto internal xref">Section 5.3</a> and <a href="#profile-ohttp" class="auto internal xref">Section 5.4</a>, respectively.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">In some cases, this trusted party can provide consistency enforcement through
 a protocol-specific mechanism (e.g., <span>[<a href="#I-D.pw-privacypass-in-band-consistency" class="cite xref">I-D.pw-privacypass-in-band-consistency</a>]</span>
 for Privacy Pass in Split Mode).  Protocol-specific consistency mechanisms may
 be preferable to protocol-agnostic consistency checks based on the mirror protocol,
 especially if they provide equivalent consistency guarantees with better performance
-or reliability.<a href="#section-5-6" class="pilcrow">¶</a></p>
+or reliability.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 <div id="profile-privacypass">
-<section id="section-5.1">
+<section id="section-5.3">
         <h3 id="name-privacy-pass-profile">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-privacy-pass-profile" class="section-name selfRef">Privacy Pass Profile</a>
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-privacy-pass-profile" class="section-name selfRef">Privacy Pass Profile</a>
         </h3>
-<p id="section-5.1-1">Clients are given as input an issuer token key from an origin server and want to check
+<p id="section-5.3-1">Clients are given as input an issuer token key from an origin server and want to check
 whether it is consistent with the key that is given to other clients. Let the input key
 be denoted token_key and its identifier be token_key_id. Clients are also given as input
 the name of the issuer, from which they can construct the target URL for the issuer
 directory. If clients have already checked this issuer’s token key, i.e., they’ve
 previously run a consistency check, they can simply reuse the result up to its expiration.
 Otherwise, clients invoke a mirror-based consistency check in parallel with the issuance
-protocol.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">Each issuer directory can yield one or more normalized representations that clients use
+protocol.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">Each issuer directory can yield one or more normalized representations that clients use
 in the consistency check. For example, given a mirrored token directory resource like the
-following:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-3">
+following:<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.3-3">
 <pre>
 {
   "issuer-request-uri": "https://issuer.example.net/request",
@@ -1480,32 +1528,34 @@ following:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
     }
   ]
 }
-</pre><a href="#section-5.1-3" class="pilcrow">¶</a>
+</pre><a href="#section-5.3-3" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-4">Clients compute the first valid representation of this directory, i.e., the first entry in
+<p id="section-5.3-4">Clients compute the first valid representation of this directory, i.e., the first entry in
 the list that the client can use, which might be the key ID of the first key in the
 "token-keys" list (depending on the "not-before" value), or the key ID of the second key
-in the "token-keys" list. The key ID is computed as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-15#section-6.5" class="relref">Section 6.5</a> of [<a href="#PRIVACYPASS-ISSUANCE" class="cite xref">PRIVACYPASS-ISSUANCE</a>]</span>.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+in the "token-keys" list. The key ID is computed as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-16#section-6.5" class="relref">Section 6.5</a> of [<a href="#PRIVACYPASS-ISSUANCE" class="cite xref">PRIVACYPASS-ISSUANCE</a>]</span>.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="profile-ohttp">
-<section id="section-5.2">
+<section id="section-5.4">
         <h3 id="name-oblivious-http-profile">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-oblivious-http-profile" class="section-name selfRef">Oblivious HTTP Profile</a>
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-oblivious-http-profile" class="section-name selfRef">Oblivious HTTP Profile</a>
         </h3>
-<p id="section-5.2-1">Clients can run consistency checks for OHTTP in several ways depending on the deployment. In practice,
-common deployments are as follows:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-5.2-2">
-<li id="section-5.2-2.1">Clients are configured with gateway configurations; and<a href="#section-5.2-2.1" class="pilcrow">¶</a>
+<p id="section-5.4-1">Clients can run consistency checks for OHTTP in several ways depending on the deployment. In practice,
+common deployments are as follows:<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.4-2">
+<li id="section-5.4-2.1">
+            <p id="section-5.4-2.1.1">Clients are configured with gateway configurations; and<a href="#section-5.4-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-5.2-2.2">Clients fetch gateway configurations before use.<a href="#section-5.2-2.2" class="pilcrow">¶</a>
+          <li id="section-5.4-2.2">
+            <p id="section-5.4-2.2.1">Clients fetch gateway configurations before use.<a href="#section-5.4-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-5.2-3">In both cases, clients begin with a gateway configuration and want to check it for consistency.
+<p id="section-5.4-3">In both cases, clients begin with a gateway configuration and want to check it for consistency.
 In OHTTP, there is exactly one representation for a gateway configuration – the configuration itself.
 Before using the configuration to encrypt a binary HTTP message to the gateway, clients can run
 a consistency check with their configured mirror(s) to ensure that this configuration is correct
-for the given gateway.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+for the given gateway.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1518,14 +1568,17 @@ for the given gateway.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 <p id="section-6-1">Consistency checks assume that the client-configured set of mirrors is honest. Under this assumption,
 the consistency properties of consistency checks based on the mirror protocol are as follows:<a href="#section-6-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6-2">
-<li id="section-6-2.1">With honest mirrors, clients that successfully check a resource are assured that they
-share the same copy of the resource with the union of mirror clients for each configured mirror.<a href="#section-6-2.1" class="pilcrow">¶</a>
+<li id="section-6-2.1">
+          <p id="section-6-2.1.1">With honest mirrors, clients that successfully check a resource are assured that they
+share the same copy of the resource with the union of mirror clients for each configured mirror.<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-6-2.2">Consistency only holds for the period of time of the minimum mirror validity window.<a href="#section-6-2.2" class="pilcrow">¶</a>
+        <li id="section-6-2.2">
+          <p id="section-6-2.2.1">Consistency only holds for the period of time of the minimum mirror validity window.<a href="#section-6-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-6-2.3">With at least one dishonest mirror, the probability of discovering an inconsistency is 1 - (1 / 2^(k-1)),
+        <li id="section-6-2.3">
+          <p id="section-6-2.3.1">With at least one dishonest mirror, the probability of discovering an inconsistency is 1 - (1 / 2^(k-1)),
 where k is the number of disjoint consistency checks. This is the probability that each individual
-consistency check succeeds.<a href="#section-6-2.3" class="pilcrow">¶</a>
+consistency check succeeds.<a href="#section-6-2.3.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 <p id="section-6-3">Unless all clients share the same configured mirrors, consistency checks using the mirror protocol do
@@ -1568,7 +1621,7 @@ not achieve global consistency as is defined in <span>[<a href="#CONSISTENCY" cl
 <dd class="break"></dd>
 <dt id="PRIVACYPASS-ISSUANCE">[PRIVACYPASS-ISSUANCE]</dt>
         <dd>
-<span class="refAuthor">Celi, S.</span>, <span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Privacy Pass Issuance Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-protocol-15</span>, <time datetime="2023-09-25" class="refDate">25 September 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-15">https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-15</a>&gt;</span>. </dd>
+<span class="refAuthor">Celi, S.</span>, <span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Privacy Pass Issuance Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-protocol-16</span>, <time datetime="2023-10-03" class="refDate">3 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-16">https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>

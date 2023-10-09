@@ -5,12 +5,12 @@
 Privacy Pass                                               B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Standards Track                               M. Finkel
-Expires: 29 March 2024                                        Apple Inc.
+Expires: 11 April 2024                                        Apple Inc.
                                                                S. Valdez
                                                               Google LLC
                                                               C. A. Wood
                                                               Cloudflare
-                                                       26 September 2023
+                                                          9 October 2023
 
 
             Checking Resource Consistency with HTTP Mirrors
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 March 2024.
+   This Internet-Draft will expire on 11 April 2024.
 
 Copyright Notice
 
@@ -81,8 +81,10 @@ Table of Contents
    4.  Mirror Protocol
      4.1.  Mirror Request and Response Example
    5.  Using Mirrors for Consistency Checks
-     5.1.  Privacy Pass Profile
-     5.2.  Oblivious HTTP Profile
+     5.1.  Handling Consistency Failures
+     5.2.  Selecting Mirror Servers
+     5.3.  Privacy Pass Profile
+     5.4.  Oblivious HTTP Profile
    6.  Security Considerations
    7.  IANA Considerations
    8.  References
@@ -128,8 +130,8 @@ Table of Contents
    with many, potentially less trusted mirrors, and used for determining
    consistency.  Section 5 provides general guidance for using the
    mirror protocol for consistency checks, along with specific profiles
-   of the protocol for Privacy Pass and OHTTP in Section 5.1 and
-   Section 5.2, respectively.
+   of the protocol for Privacy Pass and OHTTP in Section 5.3 and
+   Section 5.4, respectively.
 
 2.  Conventions and Definitions
 
@@ -322,6 +324,37 @@ accept = application/private-token-issuer-directory
    mirror is trustworthy, and application requirements for dealing with
    consistency check failures.
 
+5.1.  Handling Consistency Failures
+
+   If a consistency check fails because the mirrored resource did not
+   match, the client MUST NOT use the original resource.  For cases
+   where the check failed because the client was unable to communicate
+   with the mirror, client policy dictates whether or not to assume the
+   resource is consistent.  Client behavior for what to do in the case
+   of inconsistency can vary depending on the protocol, availability of
+   alternative services, and client policy.
+
+   If the client has multiple options for equivalent services, it can
+   choose to fall back from a service that failed a consistency check to
+   one that passed all consistency checks.  For example, if a client has
+   the option of using one of a set of Privacy Pass token issuers, it
+   can choose an issuer that passes all consistency checks.
+
+   If the service that failed the consistency check is an optional
+   optimization for the client, the client can simply choose to not use
+   the service.  For example, if a Privacy Pass token is used to avoid
+   showing the user a CAPTCHA, but the Privacy Pass token issuer fails
+   the consistency check, the client can fall back to showing the user a
+   CAPTCHA.
+
+   For cases where the client has no alternate services to use, and the
+   service is required in order to perform user-facing functionality,
+   the client SHOULD report the error in a visible way that presents the
+   error to the user or an administrator.  This functionality can be
+   similar to how invalid TLS certificates are reported.
+
+5.2.  Selecting Mirror Servers
+
    In many of these systems where the mirror protocol might be used,
    including common configurations for Privacy Pass and OHTTP, there is
    already a party who is necessarily trusted to protect the user's
@@ -335,7 +368,7 @@ accept = application/private-token-issuer-directory
    revealing any metadata about the client's activity to additional
    parties and reduces the likelihood of an outage.  More information
    for implementing this check in the context of Privacy Pass and OHTTP
-   is provided in Section 5.1 and Section 5.2, respectively.
+   is provided in Section 5.3 and Section 5.4, respectively.
 
    In some cases, this trusted party can provide consistency enforcement
    through a protocol-specific mechanism (e.g.,
@@ -345,7 +378,7 @@ accept = application/private-token-issuer-directory
    especially if they provide equivalent consistency guarantees with
    better performance or reliability.
 
-5.1.  Privacy Pass Profile
+5.3.  Privacy Pass Profile
 
    Clients are given as input an issuer token key from an origin server
    and want to check whether it is consistent with the key that is given
@@ -385,7 +418,7 @@ accept = application/private-token-issuer-directory
    key in the "token-keys" list.  The key ID is computed as defined in
    Section 6.5 of [PRIVACYPASS-ISSUANCE].
 
-5.2.  Oblivious HTTP Profile
+5.4.  Oblivious HTTP Profile
 
    Clients can run consistency checks for OHTTP in several ways
    depending on the deployment.  In practice, common deployments are as
@@ -459,9 +492,9 @@ accept = application/private-token-issuer-directory
    [PRIVACYPASS-ISSUANCE]
               Celi, S., Davidson, A., Valdez, S., and C. A. Wood,
               "Privacy Pass Issuance Protocol", Work in Progress,
-              Internet-Draft, draft-ietf-privacypass-protocol-15, 25
-              September 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-privacypass-protocol-15>.
+              Internet-Draft, draft-ietf-privacypass-protocol-16, 3
+              October 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-privacypass-protocol-16>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
