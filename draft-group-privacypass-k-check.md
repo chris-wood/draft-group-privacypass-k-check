@@ -281,7 +281,7 @@ consistency check, the client can fall back to showing the user a CAPTCHA.
 
 For cases where the client has no alternate services to use, and the service is
 required in order to perform user-facing functionality, the client SHOULD report the
-error in a visible way the presents the error to the user or an administrator. This
+error in a visible way that presents the error to the user or an administrator. This
 functionality can be similar to how invalid TLS certificates are reported.
 
 ## Selecting Mirror Servers
