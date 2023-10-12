@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-10T00:18:54.609947+00:00",
+  "timestamp": "2023-10-12T00:17:43.868146+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -967,25 +967,33 @@
       "id": "PR_kwDOJv72Bc5ahAM8",
       "title": "Define success with respect to a threshold of mirrors",
       "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/pull/13",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sysrqb",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Closes #11 ",
       "createdAt": "2023-09-17T21:26:35Z",
-      "updatedAt": "2023-09-17T21:26:35Z",
+      "updatedAt": "2023-10-10T21:24:09Z",
       "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
       "baseRefName": "main",
       "baseRefOid": "57dd72defef1180f256bde8a29171b365366dce3",
       "headRepository": "sysrqb/draft-group-privacypass-k-check",
       "headRefName": "mirror_threshold",
       "headRefOid": "46b1e1ff2c5d57d083da353b8bffdc89fcd89096",
-      "closedAt": null,
+      "closedAt": "2023-10-10T21:24:09Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "Closing as overcome by events.",
+          "createdAt": "2023-10-10T21:24:09Z",
+          "updatedAt": "2023-10-10T21:24:09Z"
+        }
+      ],
       "reviews": []
     },
     {
