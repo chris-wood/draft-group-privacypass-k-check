@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-12T00:17:43.868146+00:00",
+  "timestamp": "2023-10-17T00:19:26.425689+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -211,7 +211,7 @@
       "labels": [],
       "body": "Consider adding a deployment consideration comment about how to avoid the thundering herd problem.",
       "createdAt": "2023-08-21T15:45:45Z",
-      "updatedAt": "2023-09-08T16:14:22Z",
+      "updatedAt": "2023-10-16T16:05:55Z",
       "closedAt": null,
       "comments": [
         {
@@ -227,6 +227,20 @@
           "body": "The best solution I've thought of is to define each profile as providing a \"ladder\" comprising a pair of resources (perhaps distinguished by a request header).  The client fetches both, which are cached independently, and verifies that that they indicate the same configurations during the overlap in their cache lifetimes.  After the first expiration, the client picks a random time before the second one expires to refresh the first one.  This ensures that refresh requests are not clustered near expiration times, and allows us to continue using the Mirror Protocol as-is.  (Mirrors do not need to be aware of the ladder semantics.)  However, it doubles the number of requests, and complicates the deployment for origins.",
           "createdAt": "2023-09-08T16:14:22Z",
           "updatedAt": "2023-09-08T16:14:22Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Another approach is to generally recommend that clients fetch resources from the mirror as they need to use the resource (if I don't need to fetch a token, then I don't check the key when the key expires). For these less frequent cases, they shouldn't have a thundering herd.\r\n\r\nFor resources that are used very frequently, clients should avoid fetching the mirror resource at the exact time of expiration, and should have some jitter around that (potentially aligned to when they'd fetch a resource based on use anyway)",
+          "createdAt": "2023-10-16T15:48:30Z",
+          "updatedAt": "2023-10-16T15:48:30Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> For these less frequent cases, they shouldn't have a thundering herd.\r\n\r\nYes: if the use frequency is long relative to the cache lifetime, then we don't expect clustering of refreshes at expiration points.  (Assuming on-demand validation, which seems like the reasonable default despite some concerns about timing correlations.)\r\n\r\n> For resources that are used very frequently, clients should avoid fetching the mirror resource at the exact time of expiration, and should have some jitter around that\r\n\r\nI don't think this works.  Fetches prior to the expiration time don't help: they just return a mirror resource that is about to expire.  Using the fetched resource after the expiration time is unsafe in two ways: it may be invalid (leading to failure) and you may be the only client still using it (leading to deanonymization).",
+          "createdAt": "2023-10-16T16:05:55Z",
+          "updatedAt": "2023-10-16T16:05:55Z"
         }
       ]
     },
