@@ -325,7 +325,7 @@ should re-confirm consistency of a cached resource if it is not fresh (see
 
 Two strategies for maintaining consistency are:
 1. Pre-emptively execute a consistency check for a resource that is expiring soon; and
-1. Execute a consistency check of an expired resource at the time of its next use
+1. Execute a consistency check of an expired resource at the time of its next use.
 
 For strategy 1, clients should avoid executing the check at the time of
 expiration. Implementations should decide when re-checking is appropriate
