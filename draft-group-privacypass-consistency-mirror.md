@@ -334,8 +334,8 @@ checks at random times before the resource expires. Clients that have more infor
 about a mirror's available capacity can choose different implementations for strategy 1.
 
 Strategy 2 might be preferrable for a service and resource that is infrequently
-used. Clients should consider how this strategy may reveal usage patterns over
-time to the mirror.
+used. However, a consequence of this strategy is that it can reveal a client's
+usage patterns to the mirror.
 
 When the origin server has multiple versions of a resource corresponding to a
 URL, it should respond with the resource that is both currently valid and will
