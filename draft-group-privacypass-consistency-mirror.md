@@ -152,7 +152,7 @@ if the following criteria are met:
 1. The cached response is fresh according to its Cache-Control header (see {{Section 4.2 of ?CACHING=RFC9111}}).
 
 If both criteria are met, the mirror encodes the cached response using Binary HTTP {{!BHTTP=RFC9292}}
-and returns it to the client in a response. The mirror response incldues a Cache-Control header
+and returns it to the client in a response. The mirror response includes a Cache-Control header
 with "max-age" directive set to that of the cached response.
 
 Otherwise, mirrors send a GET request to the target resource URL, copying the Accept header from
@@ -313,6 +313,34 @@ be preferable to protocol-agnostic consistency checks based on the mirror protoc
 especially if they provide equivalent consistency guarantees with better performance
 or reliability.
 
+## Consistency Validity Period
+
+Executing a consistency check provides a client with some assurance that other
+clients may be using the same resource {{security-considerations}}. However,
+this result only reflects a mirror's view of a resource at a particular point
+in time. The client should periodically re-check consistency. The frequency of
+re-checking depends on the requirements of the client {{integration}}. Clients
+should re-confirm consistency of a cached resource if it is not fresh (see
+{{Section 4.2 of ?CACHING=RFC9111}}).
+
+Two strategies for maintaining consistency are:
+1. Pre-emptively execute a consistency check for a resource that is expiring soon
+1. Execute a consistency check of an expired resource at the time of its next use
+
+For strategy 1, clients should avoid executing the check at the time of
+expiration. Implementations should decide when re-checking is appropriate
+depending on available server capacity and expected client load. For example,
+an implementation could configure clients to re-check consistency at some
+randomly chosen time within a few hours before the resource's expiration time.
+
+Strategy 2 might be preferrable for a service and resource that is infrequently
+used. Clients should consider how this strategy may reveal usage patterns over
+time to the mirror.
+
+When the origin server has multiple versions of a resource corresponding to a
+URL, it should respond with the resource that is both currently valid and will
+remain fresh for the longest amount of time in the future.
+
 ## Privacy Pass Profile {#profile-privacypass}
 
 Clients are given as input an issuer token key from an origin server and want to check
@@ -364,7 +392,7 @@ Before using the configuration to encrypt a binary HTTP message to the gateway, 
 a consistency check with their configured mirror(s) to ensure that this configuration is correct
 for the given gateway.
 
-# Security Considerations
+# Security Considerations {#security-considerations}
 
 Consistency checks assume that the client-configured set of mirrors is honest. Under this assumption,
 the consistency properties of consistency checks based on the mirror protocol are as follows:
