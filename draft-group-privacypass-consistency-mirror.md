@@ -327,11 +327,11 @@ Two strategies for maintaining consistency are:
 1. Pre-emptively execute a consistency check for a resource that is expiring soon; and
 1. Execute a consistency check of an expired resource at the time of its next use.
 
-For strategy 1, clients should avoid executing the check at the time of
-expiration. Implementations should decide when re-checking is appropriate
-depending on available server capacity and expected client load. For example,
-an implementation could configure clients to re-check consistency at some
-randomly chosen time within a few hours before the resource's expiration time.
+For strategy 1, clients that execute consistency checks at the same time can
+induce a thundering herd that overwhelms the mirror resource. Since coordinating
+consistency checks across clients is difficult, clients can instead execute consistency
+checks at random times before the resource expires. Clients that have more information
+about a mirror's available capacity can choose different implementations for strategy 1.
 
 Strategy 2 might be preferrable for a service and resource that is infrequently
 used. Clients should consider how this strategy may reveal usage patterns over
