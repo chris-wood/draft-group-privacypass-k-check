@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-17T00:19:26.425689+00:00",
+  "timestamp": "2023-10-19T00:18:58.822897+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -211,7 +211,7 @@
       "labels": [],
       "body": "Consider adding a deployment consideration comment about how to avoid the thundering herd problem.",
       "createdAt": "2023-08-21T15:45:45Z",
-      "updatedAt": "2023-10-16T16:05:55Z",
+      "updatedAt": "2023-10-18T19:53:59Z",
       "closedAt": null,
       "comments": [
         {
@@ -241,6 +241,13 @@
           "body": "> For these less frequent cases, they shouldn't have a thundering herd.\r\n\r\nYes: if the use frequency is long relative to the cache lifetime, then we don't expect clustering of refreshes at expiration points.  (Assuming on-demand validation, which seems like the reasonable default despite some concerns about timing correlations.)\r\n\r\n> For resources that are used very frequently, clients should avoid fetching the mirror resource at the exact time of expiration, and should have some jitter around that\r\n\r\nI don't think this works.  Fetches prior to the expiration time don't help: they just return a mirror resource that is about to expire.  Using the fetched resource after the expiration time is unsafe in two ways: it may be invalid (leading to failure) and you may be the only client still using it (leading to deanonymization).",
           "createdAt": "2023-10-16T16:05:55Z",
           "updatedAt": "2023-10-16T16:05:55Z"
+        },
+        {
+          "author": "sysrqb",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks for raising this issue Ben, and giving some guidance on how to solve it. I wrote some text around this. It takes a simpler approach that puts some responsibility on the service/origin, instead of describing a more complicated client-side chaining/ladder solution. Some implementations may benefit from chaining multiple resources, with different expiration periods, but that seems out of scope for the core protocol at this time. If there is interest in specifying this from the group, then we will discuss adding it in a later version of the draft.",
+          "createdAt": "2023-10-18T19:53:59Z",
+          "updatedAt": "2023-10-18T19:53:59Z"
         }
       ]
     },
@@ -265,15 +272,15 @@
       "id": "I_kwDOJv72Bc5wT5uc",
       "title": "Consider ensuring end-to-end configuration authenticity",
       "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sysrqb",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The client may not have a mechanism for verifying that a configuration is authentic - only consistent within the assumptions of the design. For Privacy Pass, the client already processes a cryptographic key from which it derives the keyid and the client trusts that its set of K-Check mirrors won't collude with the origin. A similar situation exists with other profiles, such as OHTTP.\r\n\r\nOne suggestion we received is requiring self-authenticating configurations.",
       "createdAt": "2023-09-06T15:28:35Z",
-      "updatedAt": "2023-09-25T19:35:42Z",
-      "closedAt": null,
+      "updatedAt": "2023-10-18T20:37:06Z",
+      "closedAt": "2023-10-18T20:37:05Z",
       "comments": [
         {
           "author": "bemasc",
@@ -330,6 +337,13 @@
           "body": "@sysrqb do we want to keep this open? I think self-certifying configurations are somewhat orthogonal to the core work here. ",
           "createdAt": "2023-09-25T19:35:42Z",
           "updatedAt": "2023-09-25T19:35:42Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "I'm going to close this as resolved, since resources can be self-certifying on top of the mirror protocol without requiring any changes. Please feel free to re-open as needed.",
+          "createdAt": "2023-10-18T20:37:05Z",
+          "updatedAt": "2023-10-18T20:37:05Z"
         }
       ]
     },
@@ -338,16 +352,24 @@
       "id": "I_kwDOJv72Bc5wT85H",
       "title": "Rely on a quorum of mirrors",
       "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/11",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "sysrqb",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Currently we describe the failure mode based on some probability of mirror failure/misbehavior. This can be improved.\r\n\r\n```\r\nWith at least one dishonest mirror, the probability of discovering an inconsistency is 1 - (1 / 2^(k-1)). This is the probability that each individual mirror check succeeds in the mirror protocol.\r\n```\r\n\r\nOne suggestion we received is using a concept of quorum instead.",
       "createdAt": "2023-09-06T15:35:49Z",
-      "updatedAt": "2023-09-17T19:46:13Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2023-10-18T20:36:05Z",
+      "closedAt": "2023-10-18T20:36:05Z",
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "I think we can safely close this now.",
+          "createdAt": "2023-10-18T20:36:05Z",
+          "updatedAt": "2023-10-18T20:36:05Z"
+        }
+      ]
     },
     {
       "number": 14,
@@ -1328,6 +1350,92 @@
               "updatedAt": "2023-10-09T15:40:16Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "PR_kwDOJv72Bc5dLqrM",
+      "title": "Add some guidance on re-checking consistency",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/pull/21",
+      "state": "OPEN",
+      "author": "sysrqb",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-18T19:35:08Z",
+      "updatedAt": "2023-10-18T20:54:23Z",
+      "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
+      "baseRefName": "main",
+      "baseRefOid": "eac85f3cbf621a58a551ccccf0bc5622b9830b22",
+      "headRepository": "sysrqb/draft-group-privacypass-consistency-mirror",
+      "headRefName": "rechecking_consistency",
+      "headRefOid": "f55dd04a378dfbfa83509b20feb5625d0ad10e01",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "sysrqb",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Closes #8 ",
+          "createdAt": "2023-10-18T19:44:51Z",
+          "updatedAt": "2023-10-18T19:44:51Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJv72Bc5kfkja",
+          "commit": {
+            "abbreviatedOid": "dbcce9b"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-18T19:47:13Z",
+          "updatedAt": "2023-10-18T19:54:02Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\r\n1. Pre-emptively execute a consistency check for a resource that is expiring soon; and\r\n```",
+              "createdAt": "2023-10-18T19:47:13Z",
+              "updatedAt": "2023-10-18T19:54:02Z"
+            },
+            {
+              "originalPosition": 25,
+              "body": "```suggestion\r\n1. Execute a consistency check of an expired resource at the time of its next use.\r\n```",
+              "createdAt": "2023-10-18T19:47:19Z",
+              "updatedAt": "2023-10-18T19:54:02Z"
+            },
+            {
+              "originalPosition": 31,
+              "body": "```suggestion\r\nFor strategy 1, clients that execute consistency checks at the same time can\r\ninduce a thundering herd that overwhelms the mirror resource. Since coordinating\r\nconsistency checks across clients is difficult, clients can instead execute consistency\r\nchecks at random times before the resource expires. Clients that have more information\r\nabout a mirror's available capacity can choose different implementations for strategy 1.\r\n```",
+              "createdAt": "2023-10-18T19:53:08Z",
+              "updatedAt": "2023-10-18T19:54:02Z"
+            },
+            {
+              "originalPosition": 35,
+              "body": "```suggestion\r\nused. However, a consequence of this strategy is that it can reveal a client's\r\nusage patterns to the mirror.\r\n```",
+              "createdAt": "2023-10-18T19:53:50Z",
+              "updatedAt": "2023-10-18T19:54:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJv72Bc5kgD9E",
+          "commit": {
+            "abbreviatedOid": "f55dd04"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-10-18T20:54:23Z",
+          "updatedAt": "2023-10-18T20:54:23Z",
+          "comments": []
         }
       ]
     }
