@@ -5,14 +5,14 @@
 Privacy Pass                                               B. Beurdouche
 Internet-Draft                                           Inria & Mozilla
 Intended status: Standards Track                               M. Finkel
-Expires: 11 April 2024                                        Apple Inc.
+Expires: 25 April 2024                                        Apple Inc.
                                                                S. Valdez
                                                               Google LLC
                                                               C. A. Wood
                                                               Cloudflare
                                                                 T. Pauly
                                                               Apple Inc.
-                                                          9 October 2023
+                                                         23 October 2023
 
 
             Checking Resource Consistency with HTTP Mirrors
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 April 2024.
+   This Internet-Draft will expire on 25 April 2024.
 
 Copyright Notice
 
@@ -86,8 +86,9 @@ Table of Contents
    5.  Using Mirrors for Consistency Checks
      5.1.  Handling Consistency Failures
      5.2.  Selecting Mirror Servers
-     5.3.  Privacy Pass Profile
-     5.4.  Oblivious HTTP Profile
+     5.3.  Consistency Validity Period
+     5.4.  Privacy Pass Profile
+     5.5.  Oblivious HTTP Profile
    6.  Security Considerations
    7.  IANA Considerations
    8.  References
@@ -133,8 +134,8 @@ Table of Contents
    with many, potentially less trusted mirrors, and used for determining
    consistency.  Section 5 provides general guidance for using the
    mirror protocol for consistency checks, along with specific profiles
-   of the protocol for Privacy Pass and OHTTP in Section 5.3 and
-   Section 5.4, respectively.
+   of the protocol for Privacy Pass and OHTTP in Section 5.4 and
+   Section 5.5, respectively.
 
 2.  Conventions and Definitions
 
@@ -207,7 +208,7 @@ Table of Contents
 
    If both criteria are met, the mirror encodes the cached response
    using Binary HTTP [BHTTP] and returns it to the client in a response.
-   The mirror response incldues a Cache-Control header with "max-age"
+   The mirror response includes a Cache-Control header with "max-age"
    directive set to that of the cached response.
 
    Otherwise, mirrors send a GET request to the target resource URL,
@@ -371,7 +372,7 @@ accept = application/private-token-issuer-directory
    revealing any metadata about the client's activity to additional
    parties and reduces the likelihood of an outage.  More information
    for implementing this check in the context of Privacy Pass and OHTTP
-   is provided in Section 5.3 and Section 5.4, respectively.
+   is provided in Section 5.4 and Section 5.5, respectively.
 
    In some cases, this trusted party can provide consistency enforcement
    through a protocol-specific mechanism (e.g.,
@@ -381,7 +382,40 @@ accept = application/private-token-issuer-directory
    especially if they provide equivalent consistency guarantees with
    better performance or reliability.
 
-5.3.  Privacy Pass Profile
+5.3.  Consistency Validity Period
+
+   Executing a consistency check provides a client with some assurance
+   that other clients may be using the same resource Section 6.
+   However, this result only reflects a mirror's view of a resource at a
+   particular point in time.  The client should periodically re-check
+   consistency.  The frequency of re-checking depends on the
+   requirements of the client Section 5.  Clients should re-confirm
+   consistency of a cached resource if it is not fresh (see Section 4.2
+   of [CACHING]).
+
+   Two strategies for maintaining consistency are: 1.  Pre-emptively
+   execute a consistency check for a resource that is expiring soon; and
+   1.  Execute a consistency check of an expired resource at the time of
+   its next use.
+
+   For strategy 1, clients that execute consistency checks at the same
+   time can induce a thundering herd that overwhelms the mirror
+   resource.  Since coordinating consistency checks across clients is
+   difficult, clients can instead execute consistency checks at random
+   times before the resource expires.  Clients that have more
+   information about a mirror's available capacity can choose different
+   implementations for strategy 1.
+
+   Strategy 2 might be preferrable for a service and resource that is
+   infrequently used.  However, a consequence of this strategy is that
+   it can reveal a client's usage patterns to the mirror.
+
+   When the origin server has multiple versions of a resource
+   corresponding to a URL, it should respond with the resource that is
+   both currently valid and will remain fresh for the longest amount of
+   time in the future.
+
+5.4.  Privacy Pass Profile
 
    Clients are given as input an issuer token key from an origin server
    and want to check whether it is consistent with the key that is given
@@ -421,7 +455,7 @@ accept = application/private-token-issuer-directory
    key in the "token-keys" list.  The key ID is computed as defined in
    Section 6.5 of [PRIVACYPASS-ISSUANCE].
 
-5.4.  Oblivious HTTP Profile
+5.5.  Oblivious HTTP Profile
 
    Clients can run consistency checks for OHTTP in several ways
    depending on the deployment.  In practice, common deployments are as
