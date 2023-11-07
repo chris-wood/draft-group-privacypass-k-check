@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-24T00:19:10.240461+00:00",
+  "timestamp": "2023-11-07T00:19:41.464064+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -944,7 +944,7 @@
       "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
       "baseRefName": "main",
       "baseRefOid": "1f50e3d918735dd1c9a52d6d9612d6ee1bb07bec",
-      "headRepository": "sysrqb/draft-group-privacypass-k-check",
+      "headRepository": "sysrqb/draft-group-privacypass-consistency-mirror",
       "headRefName": "author",
       "headRefOid": "31a1b48b73140f1bc7898be1208989cb0a11e81c",
       "closedAt": "2023-07-10T20:23:19Z",
@@ -986,7 +986,7 @@
       "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
       "baseRefName": "main",
       "baseRefOid": "57dd72defef1180f256bde8a29171b365366dce3",
-      "headRepository": "sysrqb/draft-group-privacypass-k-check",
+      "headRepository": "sysrqb/draft-group-privacypass-consistency-mirror",
       "headRefName": "readability-improvements",
       "headRefOid": "b9efb2bfbaeb070c70ed310bee7bef418a89b537",
       "closedAt": "2023-09-25T14:46:42Z",
@@ -1028,7 +1028,7 @@
       "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
       "baseRefName": "main",
       "baseRefOid": "57dd72defef1180f256bde8a29171b365366dce3",
-      "headRepository": "sysrqb/draft-group-privacypass-k-check",
+      "headRepository": "sysrqb/draft-group-privacypass-consistency-mirror",
       "headRefName": "mirror_threshold",
       "headRefOid": "46b1e1ff2c5d57d083da353b8bffdc89fcd89096",
       "closedAt": "2023-10-10T21:24:09Z",
