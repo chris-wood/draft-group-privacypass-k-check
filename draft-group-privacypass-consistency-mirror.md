@@ -25,7 +25,7 @@ author:
  -
     ins: B. Beurdouche
     name: Benjamin Beurdouche
-    organization: Inria & Mozilla
+    organization: Mozilla
     email: ietf@beurdouche.com
  -
     ins: M. Finkel
