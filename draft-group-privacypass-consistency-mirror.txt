@@ -3,16 +3,16 @@
 
 
 Privacy Pass                                               B. Beurdouche
-Internet-Draft                                           Inria & Mozilla
+Internet-Draft                                                   Mozilla
 Intended status: Standards Track                               M. Finkel
-Expires: 25 April 2024                                        Apple Inc.
+Expires: 12 May 2024                                          Apple Inc.
                                                                S. Valdez
                                                               Google LLC
                                                               C. A. Wood
                                                               Cloudflare
                                                                 T. Pauly
                                                               Apple Inc.
-                                                         23 October 2023
+                                                         9 November 2023
 
 
             Checking Resource Consistency with HTTP Mirrors
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 April 2024.
+   This Internet-Draft will expire on 12 May 2024.
 
 Copyright Notice
 
@@ -576,7 +576,7 @@ Acknowledgments
 Authors' Addresses
 
    Benjamin Beurdouche
-   Inria & Mozilla
+   Mozilla
    Email: ietf@beurdouche.com
 
 
