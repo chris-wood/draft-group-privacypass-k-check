@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-09T00:19:11.663805+00:00",
+  "timestamp": "2023-11-12T00:21:17.393300+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -546,7 +546,7 @@
       "comments": [
         {
           "author": "beurdouche",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "That looks fine \ud83d\udc4d ",
           "createdAt": "2023-06-28T16:12:49Z",
           "updatedAt": "2023-06-28T16:12:49Z"
@@ -1514,6 +1514,34 @@
           ]
         }
       ]
+    },
+    {
+      "number": 22,
+      "id": "PR_kwDOJv72Bc5fBxmX",
+      "title": "Update Ben's affiliation",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/pull/22",
+      "state": "MERGED",
+      "author": "beurdouche",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-11-09T12:13:04Z",
+      "updatedAt": "2023-11-09T15:23:41Z",
+      "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
+      "baseRefName": "main",
+      "baseRefOid": "dec7fbbbc9efbbca24d7e18040b58fe80f720419",
+      "headRepository": "beurdouche/draft-group-privacypass-consistency-mirror",
+      "headRefName": "main",
+      "headRefOid": "018896f25ee7d6335d2dc366d54e03e72782e472",
+      "closedAt": "2023-11-09T15:23:40Z",
+      "mergedAt": "2023-11-09T15:23:40Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "bcc95319765df7bd468c2dd1c2d0e2069b121891"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
