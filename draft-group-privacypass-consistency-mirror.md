@@ -56,6 +56,7 @@ normative:
 
 informative:
   DOUBLE-CHECK: I-D.schwartz-ohai-consistency-doublecheck
+  RFC8792:
 
 
 --- abstract
@@ -184,12 +185,13 @@ cache miss and the second one yields a mirror cache hit. The Mirror URI Template
 
 The first client request to the mirror might be the following.
 
-~~~
-:method = GET
-:scheme = https
-:authority = mirror.example
-:path = /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fprivate-token-issuer-directory
-accept = application/private-token-issuer-directory
+~~~ http-message
+NOTE: '\' line wrapping per RFC 8792
+
+GET /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fpriv\
+   ate-token-issuer-directory HTTP/1.1
+Host: mirror.example
+Accept: application/private-token-issuer-directory
 ~~~
 
 Upon receipt, the mirror decodes the "target" parameter, inspects its cache for a copy of the
@@ -197,21 +199,18 @@ resource, and then constructs a HTTP request to the target URL to fetch the cont
 the relay copies the Accept header from the client request to the request sent to the target.
 This mirror request to the target might be the following.
 
-~~~
-:method = GET
-:scheme = https
-:authority = target.example
-:path = /.well-known/private-token-issuer-directory
-accept = application/private-token-issuer-directory
+~~~ http-message
+GET /.well-known/private-token-issuer-directory HTTP/1.1
+Host: target.example
+Accept: application/private-token-issuer-directory
 ~~~
 
 The target response is then returned to the mirror, like so:
 
-~~~
-:status = 200
-content-type = application/private-token-issuer-directory
-content-length = ...
-cache-control: max-age=3600
+~~~ http-message
+HTTP/1.1 200 Fine
+Content-Type: application/private-token-issuer-directory
+Cache-Control: max-age=3600
 
 <Bytes containing a private token issuer directory>
 ~~~
@@ -219,10 +218,9 @@ cache-control: max-age=3600
 The mirror caches this response content for the target URL, encodes it using Binary HTTP {{BHTTP}},
 and then returns the response to the client:
 
-~~~
-:status = 200
-content-length = ...
-cache-control: max-age=3600
+~~~ http-message
+HTTP/1.1 200 Good Enough
+Cache-control: max-age=3600
 
 <Bytes containing the target's BHTTP-encoded response>
 ~~~
@@ -230,20 +228,18 @@ cache-control: max-age=3600
 When a second client asks for the same request by the mirror it can be served with the cached
 copy. The second client's request might be the following:
 
-~~~
-:method = GET
-:scheme = https
-:authority = mirror.example
-:path = /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fprivate-token-issuer-directory
+~~~ http-message
+GET /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fpriv\
+    ate-token-issuer-directory HTTP/1.1
+Host: mirror.example
 ~~~
 
 The mirror validates the request, locates the cached copy of the
 "https://issuer.example/.well-known/private-token-issuer-directory" content, and then
 returns it to the client without updating its cached copy.
 
-~~~
-:status = 200
-content-length = ...
+~~~ http-message
+HTTP/1.1 200 Nice
 cache-control: max-age=3600
 
 <Bytes containing the target's BHTTP-encoded response>
@@ -356,18 +352,18 @@ Each issuer directory can yield one or more normalized representations that clie
 in the consistency check. For example, given a mirrored token directory resource like the
 following:
 
-~~~
+~~~ json
 {
   "issuer-request-uri": "https://issuer.example.net/request",
   "token-keys": [
     {
       "token-type": 2,
       "token-key": "MI...AB",
-      "not-before": 1686913811,
+      "not-before": 1686913811
     },
     {
       "token-type": 2,
-      "token-key": "MI...AQ",
+      "token-key": "MI...AQ"
     }
   ]
 }
