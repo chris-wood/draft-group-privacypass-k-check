@@ -189,7 +189,7 @@ The first client request to the mirror might be the following.
 NOTE: '\' line wrapping per RFC 8792
 
 GET /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fpriv\
-   ate-token-issuer-directory HTTP/1.1
+    ate-token-issuer-directory HTTP/1.1
 Host: mirror.example
 Accept: application/private-token-issuer-directory
 ~~~
@@ -229,6 +229,8 @@ When a second client asks for the same request by the mirror it can be served wi
 copy. The second client's request might be the following:
 
 ~~~ http-message
+NOTE: '\' line wrapping per RFC 8792
+
 GET /mirror?target=https%3A%2F%2Fissuer.example%2F.well-known%2Fpriv\
     ate-token-issuer-directory HTTP/1.1
 Host: mirror.example
