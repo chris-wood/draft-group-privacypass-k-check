@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-30T00:20:25.733197+00:00",
+  "timestamp": "2023-12-03T00:21:55.972349+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -515,6 +515,102 @@
           "updatedAt": "2023-09-25T15:52:37Z"
         }
       ]
+    },
+    {
+      "number": 23,
+      "id": "I_kwDOJv72Bc54Zdta",
+      "title": "Freshness vs. age",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/23",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "When talking about caching at a mirror, the minimum retention uses the following phrase:\r\n\r\n> their \"max-age\" response directive.\r\n\r\nYou want \"[freshness lifetime](https://datatracker.ietf.org/doc/html/rfc9111#name-freshness)\".",
+      "createdAt": "2023-12-01T02:42:07Z",
+      "updatedAt": "2023-12-01T02:42:07Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 25,
+      "id": "I_kwDOJv72Bc54aO45",
+      "title": "Does this really need binary HTTP?",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/25",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I like RFC 9292, but it seems like maybe it is unnecessary for this use case.  The reason that RFC 9292 is used here appears to be that the header fields from the request that the mirror makes of the mirrored resource need to make it to the client.  However, there is no end-to-end integrity protection for the resource.  It would be simpler if the mirror resource were to provide a media type and copy the content directly.",
+      "createdAt": "2023-12-01T05:48:52Z",
+      "updatedAt": "2023-12-01T05:48:52Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 26,
+      "id": "I_kwDOJv72Bc54aREn",
+      "title": "Cache lifetime on mirrored resources",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/26",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The mirror is not a cache of the identified resource, it is creating a resource with its own identity. Therefore, it could have an independent freshness lifetime.\r\n\r\nIf you remove the bhttp envelope as #25 suggests, then you will totally lose information about freshness of the original.  However, I believe that a mirror only exists to validate the bytes: a client should have a copy of the resource direct from the authoritative source that contains authoritative information about freshness lifetimes.  (Because mirrors cannot be used to establish the authenticity of content, only its consistency.)\r\n\r\nThe mirror could use (or is it abuse?) targeted cache control fields for the purpose of providing information about what the mirror received from the authoritative source, but I'm struggling to come up with a really good reason to pass that information along.",
+      "createdAt": "2023-12-01T05:55:21Z",
+      "updatedAt": "2023-12-01T05:55:21Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 27,
+      "id": "I_kwDOJv72Bc54aRkh",
+      "title": "Mirrors cannot be used to establish the authenticity of content",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/27",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This really needs to be said a few times: *mirrors cannot be used to establish the authenticity of content, only its consistency*.\r\n\r\nPlease consider adding that to the security considerations.",
+      "createdAt": "2023-12-01T05:57:04Z",
+      "updatedAt": "2023-12-01T05:57:04Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 28,
+      "id": "I_kwDOJv72Bc54aTvA",
+      "title": "Consistency period",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/28",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "> Consistency only holds for the period of time of the minimum mirror validity window.\r\n\r\nThis is, a pessimistic take, but maybe not the most pessimistic.  In addition, you can't make guarantees about future or past consistency.  That is, you could be at the start of a validity window (such that consistency holds into the future), at the end (such that consistency holds into the past), or anywhere in between.\r\n\r\nIf you have multiple mirrors, you might be able to get consistency for the minimum window into the past and into the future, but you can't bank on that either.",
+      "createdAt": "2023-12-01T06:03:03Z",
+      "updatedAt": "2023-12-01T06:03:03Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 29,
+      "id": "I_kwDOJv72Bc54aWq-",
+      "title": "Defection probability",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/29",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I think that this is potentially misleading:\r\n\r\n> With at least one dishonest mirror, the probability of discovering an inconsistency is 1 - (1 / 2^(k-1)), where k is the number of disjoint consistency checks. This is the probability that each individual consistency check succeeds.\r\n\r\nThis assumes that mirrors are selected at random, which is almost never the case.\r\n\r\nA client is never subject to attack as long as they use one honest mirror.  They are only subject to denial of service if they discover the inconsistency.  Maybe.  It could depend on client policy.  For instance, if the client has 5 low quality mirrors and 1 defects, they might ignore the defector and carry on.\r\n\r\nA client that uses a single dishonest mirror might be subject to an attack if the canonical source of information colludes with the dishonest mirror.  That extends to the case where all mirrors and the canonical source collude.\r\n\r\nThis analysis only applies if a client chooses a mirror at random from a set of k mirrors that contains a single dishonest mirror.  I am not sure how many deployments would use that sort of random sampling.\r\n\r\nIn the end, I'd suggest that this concentrate on what happens AFTER a client has selected a set of mirrors.  And note that there are different policies that clients can implement.",
+      "createdAt": "2023-12-01T06:11:26Z",
+      "updatedAt": "2023-12-01T06:11:26Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -1540,6 +1636,32 @@
       "mergeCommit": {
         "oid": "bcc95319765df7bd468c2dd1c2d0e2069b121891"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 24,
+      "id": "PR_kwDOJv72Bc5g2-PN",
+      "title": "Use HTTP/1.1 for examples",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/pull/24",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "That's a protocol that was built for this use case.\r\n\r\nThe only gotcha is that this needs RFC 8792 to handle the absurdly long lines that you get from putting one URL inside another.\r\n\r\nThis produces warnings about not citing RFC 8792 directly.  I'm not sure what to do about that.",
+      "createdAt": "2023-12-01T05:43:13Z",
+      "updatedAt": "2023-12-01T05:44:44Z",
+      "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
+      "baseRefName": "main",
+      "baseRefOid": "bcc95319765df7bd468c2dd1c2d0e2069b121891",
+      "headRepository": "martinthomson/consistency-mirror",
+      "headRefName": "h11-examples",
+      "headRefOid": "1e2d0c345bf842e6ee0ed02b204013a3f64a63f5",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
