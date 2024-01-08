@@ -112,7 +112,7 @@ The following terms are used throughout this document:
 - Normalized resource representation: A unique or otherwise protocol-specific representation
   that is derived from an HTTP resource. The process of normalization is specific to a
   protocol and the resource in question.
-- Mirror: A HTTP resource that fetches and caches HTTP resources.
+- Mirror: A HTTP server that fetches and caches resources.
 
 # Mirror Protocol
 
@@ -135,12 +135,12 @@ indicating the minimum time for resources the mirror will cache according to the
 response directive. We refer to the validity window of the mirror response as the period of
 time determined by the Cache-Control headers as the response.
 
-Clients send requests to mirror resources after being configured with their corresponding
-Mirror URI Template. Clients MUST ignore configurations that do not conform to this template.
+Clients send requests to mirror resources after being configured with these resources corresponding
+Mirror URI Template. Clients MUST ignore resource configurations that do not conform to this template.
 
 Upon receipt of a mirror request, mirrors validate the incoming request. If the request is invalid
 or malformed, e.g., the "target" parameter is not a correctly encoded URL, the mirror aborts
-and returns a a 4xx (Client Error) to the client. The mirror SHOULD check that the target resource
+and returns the corresponding HTTP error (4xx Client Error for instance) to the client. The mirror SHOULD check that the target resource
 identified by the "target" parameter is allowed by policy, e.g., so that it is not abused to
 fetch arbitrary resources. One way to implement this check is via an allowlist of target URLs.
 
@@ -153,11 +153,12 @@ if the following criteria are met:
 
 If both criteria are met, the mirror encodes the cached response using Binary HTTP {{!BHTTP=RFC9292}}
 and returns it to the client in a response. The mirror response includes a Cache-Control header
-with "max-age" directive set to that of the cached response.
+with "max-age" directive set to that of the cached response minus the elapsed time since the response has been cached.
+"Expires" header MAY be used instead.
 
 Otherwise, mirrors send a GET request to the target resource URL, copying the Accept header from
 the client request if present. If this request fails, the mirror returns a 4xx error to the client.
-If this request suceeeds, the mirror checks it for validity. The response is considered valid and stored
+If this request succeeds, the mirror checks it for validity. The response is considered valid and stored
 in the mirror's cache if the following criteria are met:
 
 1. The response can be cached according to the rules in {{Section 3 of CACHING}}. In particular,
@@ -165,11 +166,13 @@ in the mirror's cache if the following criteria are met:
 1. The Cache-Control header is present, has a "max-age" response directive that is
    greater than or equal to MIN_VALIDITY_WINDOW, and does not have a "no-store" or "private" directive.
 
+If the response is invalid, the mirror returns a 4xx error to the client.
+
 Mirrors purge this cache when the response is no longer valid according to the
 Cache-Control headers.
 
 To complete the client request, the mirror then encodes the response using Binary
-HTTP {{BHTTP}} and returns it to the client in a response. The mirror response incldues a
+HTTP {{BHTTP}} and returns it to the client in a response. The mirror response includes a
 Cache-Control header with "max-age" directive set to that of the cached response.
 
 Clients recover the target's mirrored response by Binary HTTP decoding the mirror response
@@ -180,7 +183,7 @@ content.
 The following example shows two mirror request and response examples. The first one yields a mirror
 cache miss and the second one yields a mirror cache hit. The Mirror URI Template is
 "https://mirror.example/mirror{?target}", and the target URL is
-"https://issuer.example/.well-known/private-token-issuer-directory".
+"https://issuer.example/.well-known/private-token-issuer-directory". MIN_VALIDITY_WINDOW is 3600.
 
 The first client request to the mirror might be the following.
 
@@ -195,12 +198,12 @@ accept = application/private-token-issuer-directory
 Upon receipt, the mirror decodes the "target" parameter, inspects its cache for a copy of the
 resource, and then constructs a HTTP request to the target URL to fetch the content. If present,
 the relay copies the Accept header from the client request to the request sent to the target.
-This mirror request to the target might be the following.
+This mirror request to the target may be the following.
 
 ~~~
 :method = GET
 :scheme = https
-:authority = target.example
+:authority = issuer.example
 :path = /.well-known/private-token-issuer-directory
 accept = application/private-token-issuer-directory
 ~~~
@@ -216,7 +219,8 @@ cache-control: max-age=3600
 <Bytes containing a private token issuer directory>
 ~~~
 
-The mirror caches this response content for the target URL, encodes it using Binary HTTP {{BHTTP}},
+The mirror checks that the request succeeded, and that max-age is greater or equal to MIN_VALIDITY_WINDOW.
+Then, it caches this response content for the target URL, encodes it using Binary HTTP {{BHTTP}},
 and then returns the response to the client:
 
 ~~~
@@ -279,7 +283,7 @@ and client policy.
 If the client has multiple options for equivalent services, it can choose to fall back
 from a service that failed a consistency check to one that passed all consistency checks.
 For example, if a client has the option of using one of a set of Privacy Pass token
-issuers, it can choose an issuer that passes all consistency checks.
+issuers (resp attesters), it can choose an issuer (resp attesters) that passes all consistency checks.
 
 If the service that failed the consistency check is an optional optimization for the client,
 the client can simply choose to not use the service. For example, if a Privacy Pass token is
@@ -308,7 +312,7 @@ implementing this check in the context of Privacy Pass and OHTTP is provided in
 
 In some cases, this trusted party can provide consistency enforcement through
 a protocol-specific mechanism (e.g., {{?I-D.pw-privacypass-in-band-consistency}}
-for Privacy Pass in Split Mode).  Protocol-specific consistency mechanisms may
+for Privacy Pass in Split Mode). Protocol-specific consistency mechanisms may
 be preferable to protocol-agnostic consistency checks based on the mirror protocol,
 especially if they provide equivalent consistency guarantees with better performance
 or reliability.
