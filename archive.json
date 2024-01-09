@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-07T00:22:53.897721+00:00",
+  "timestamp": "2024-01-09T00:21:10.827699+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -611,6 +611,37 @@
       "updatedAt": "2023-12-01T06:11:26Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 31,
+      "id": "I_kwDOJv72Bc57cGSR",
+      "title": "How does config rotation work?",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/31",
+      "state": "OPEN",
+      "author": "ehaydenr",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I'm thinking of the following scenario:\r\n\r\n- t=0 OHTTP Gateway gives config A to mirror with validity of 10 mins\r\n- t=5min OHTTP Gateway wants to rotate config to config B\r\n- t=6min client fetches config from OHTTP gateway, gets config B\r\n- t=6min client goes to mirror and is provided config A because it's still valid in cache. Inconsistency\r\n\r\nIf the client is checking multiple mirrors, a similar inconsistency could happen since mirrors will be refreshing their cache at different times.",
+      "createdAt": "2024-01-08T17:57:32Z",
+      "updatedAt": "2024-01-08T19:07:50Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "OWNER",
+          "body": "This seems like a misconfiguration for the gateway since they specified a validity window that was longer than that which was actually used in practice. I think the expectation is that the cache validity must always be less than the lifetime of the resource.",
+          "createdAt": "2024-01-08T18:39:25Z",
+          "updatedAt": "2024-01-08T18:39:25Z"
+        },
+        {
+          "author": "ehaydenr",
+          "authorAssociation": "NONE",
+          "body": "What would a valid rotation timeline look like?\r\n\r\nIf I'm an OHTTP gateway that normally advertises a 10 minute validity window, do I have to disable caching of my configuration altogether for at least 10 minutes so no mirrors cache while I rotate?\r\n\r\nEven if I did that, I think there's still this race condition:\r\n- right before gateway config rotation, client fetches from gateway (tiny/no validity window)\r\n- gateway rotates\r\n- client goes to mirror, gets the new config.. inconsistency",
+          "createdAt": "2024-01-08T19:07:50Z",
+          "updatedAt": "2024-01-08T19:07:50Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1658,6 +1689,32 @@
       "headRepository": "martinthomson/consistency-mirror",
       "headRefName": "h11-examples",
       "headRefOid": "1e2d0c345bf842e6ee0ed02b204013a3f64a63f5",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 30,
+      "id": "PR_kwDOJv72Bc5jfLuf",
+      "title": "Add minor precisions and fix typos",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/pull/30",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Main precision is about max-age returned by the mirror to clients. It should not be the same as the cached request, as this would extend the lifetime of the original request. For privacy pass, this might lead clients to see an invalid key for instance.\r\nI propose to substract the elapsed time, even though it might create spike in traffic as client would be invalidated at the same time.\r\n\r\nOther edits in this PR are typos.",
+      "createdAt": "2024-01-08T15:14:57Z",
+      "updatedAt": "2024-01-08T15:14:57Z",
+      "baseRepository": "chris-wood/draft-group-privacypass-consistency-mirror",
+      "baseRefName": "main",
+      "baseRefOid": "bcc95319765df7bd468c2dd1c2d0e2069b121891",
+      "headRepository": "thibmeu/draft-group-privacypass-consistency-mirror",
+      "headRefName": "main",
+      "headRefOid": "b0c13e0ed90df129e87c9fa8f451737f5cc40ec0",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
