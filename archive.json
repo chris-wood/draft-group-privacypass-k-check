@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-09T00:21:10.827699+00:00",
+  "timestamp": "2024-01-11T00:20:42.329913+00:00",
   "repo": "chris-wood/draft-group-privacypass-consistency-mirror",
   "labels": [
     {
@@ -390,15 +390,15 @@
       "id": "I_kwDOJv72Bc5xTu1a",
       "title": "Increasing K creates a privacy risk when timing correlations are present",
       "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/14",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "K-Check is designed to improve in ~privacy~ resistance to active attack as K (or the threshold `t`) increases.  However, if a timing correlation is present (e.g., the client fetches an OHTTP config immediately before using it), increasing K ~actually reduces privacy~ increases vulnerability to a passive attack on the user's privacy, because any single colluding mirror can reveal the client IP to the gateway.  Adding more mirrors increases the likelihood that one of them is malicious.\r\n\r\nIf timing attacks are present in the use case, I think the optimal value of K is likely to be 1.\r\n\r\nIn some use cases, timing correlations are present for some requests (e.g., the first request issued when the configuration is not locally in cache) but not others.  In these cases, it might make sense to perform a single check (K=1) initially, and then perform more checks asynchronously (according to some randomized schedule) to catch if the initial mirror was colluding and served a targeted resource.\r\n\r\nThese issues can be avoided by tunneling K-Check through a trusted proxy, but if a trusted proxy exists then it can run the Mirror Protocol itself and K > 1 is unnecessary (see #16).",
       "createdAt": "2023-09-18T13:53:09Z",
-      "updatedAt": "2023-09-25T19:34:28Z",
-      "closedAt": null,
+      "updatedAt": "2024-01-09T15:03:18Z",
+      "closedAt": "2024-01-09T15:03:17Z",
       "comments": [
         {
           "author": "chris-wood",
@@ -434,6 +434,13 @@
           "body": "OK, so this _is_ an attack on privacy \ud83d\udc4d We can certainly note that the probability of such a thing increases as K increases.",
           "createdAt": "2023-09-25T19:34:27Z",
           "updatedAt": "2023-09-25T19:34:27Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is resolved by #19.",
+          "createdAt": "2024-01-09T15:03:17Z",
+          "updatedAt": "2024-01-09T15:03:17Z"
         }
       ]
     },
@@ -642,6 +649,22 @@
           "updatedAt": "2024-01-08T19:07:50Z"
         }
       ]
+    },
+    {
+      "number": 32,
+      "id": "I_kwDOJv72Bc57kwvc",
+      "title": "Content negotiation or protocol evolution for the target resource",
+      "url": "https://github.com/chris-wood/draft-group-privacypass-consistency-mirror/issues/32",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "If a resource has multiple representations, that is potentially OK, but also very close to what an inconsistent resource would do.  \r\n\r\nIt is probably best to avoid content negotiation for resources that need consistency, but that might constrain evolution of protocols through the use of different media types.  It would be unfortunate if the only evolution option is through the use of different URLs, if only because that creates similar problems to content negotiation in that the choice of which URL to use is something an adversary might seek to exploit.\r\n\r\nIt seems possible to ensure that - for a given request profile - the resource is consistent, but it would require some care.  Putting in place some constraints on usage might make it possible to have content negotiation or a choice of URLs without creating an exploitable variation.",
+      "createdAt": "2024-01-09T21:55:10Z",
+      "updatedAt": "2024-01-09T21:55:10Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
