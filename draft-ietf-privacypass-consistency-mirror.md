@@ -3,7 +3,7 @@ title: "Checking Resource Consistency with HTTP Mirrors"
 abbrev: "Checking Resource Consistency with HTTP Mirrors"
 category: std
 
-docname: draft-group-privacypass-consistency-mirror-latest
+docname: draft-ietf-privacypass-consistency-mirror-latest
 submissiontype: IETF
 number:
 date:
@@ -19,7 +19,7 @@ venue:
   group: "Privacy Pass"
   type: "Working Group"
   mail: "privacy-pass@ietf.org"
-  github: "chris-wood/draft-group-privacypass-K-Check"
+  github: "ietf-wg-privacypass/draft-ietf-privacypass-consistency-mirror"
 
 author:
  -
