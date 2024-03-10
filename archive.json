@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-07T00:57:31.577483+00:00",
+  "timestamp": "2024-03-10T01:13:37.224517+00:00",
   "repo": "ietf-wg-privacypass/draft-ietf-privacypass-consistency-mirror",
   "labels": [
     {
@@ -685,6 +685,38 @@
       "body": "If a resource has multiple representations, that is potentially OK, but also very close to what an inconsistent resource would do.  \r\n\r\nIt is probably best to avoid content negotiation for resources that need consistency, but that might constrain evolution of protocols through the use of different media types.  It would be unfortunate if the only evolution option is through the use of different URLs, if only because that creates similar problems to content negotiation in that the choice of which URL to use is something an adversary might seek to exploit.\r\n\r\nIt seems possible to ensure that - for a given request profile - the resource is consistent, but it would require some care.  Putting in place some constraints on usage might make it possible to have content negotiation or a choice of URLs without creating an exploitable variation.",
       "createdAt": "2024-01-09T21:55:10Z",
       "updatedAt": "2024-01-09T21:55:10Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 33,
+      "id": "I_kwDOJv72Bc6BuTBs",
+      "title": "Support well-known resource declaring all valid keys",
+      "url": "https://github.com/ietf-wg-privacypass/draft-ietf-privacypass-consistency-mirror/issues/33",
+      "state": "OPEN",
+      "author": "sysrqb",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From the adoption call:\r\n\r\n```\r\nFor Privacy Pass specifically, I think it is worth defining an OPTIONAL endpoint /.well-known/mirror-resource\r\nthat would allow clients to retrieve all issuer keys before discovering it when prompted by an Origin. A\r\nsimilar endpoint is provided in Cloudflare attester implementation [2] for instance. This endpoint could be as\r\nsimple as a list:\r\nGET /.well-known/mirror-resources\r\nhttps://issuer1.example/.well-known/private-token-issuer-directory\r\nhttps://issuer2.example/.well-known/private-token-issuer-directory\r\n```",
+      "createdAt": "2024-03-08T16:44:06Z",
+      "updatedAt": "2024-03-08T16:44:06Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 34,
+      "id": "I_kwDOJv72Bc6BuTa9",
+      "title": "Mention CORS?",
+      "url": "https://github.com/ietf-wg-privacypass/draft-ietf-privacypass-consistency-mirror/issues/34",
+      "state": "OPEN",
+      "author": "sysrqb",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From the adoption call:\r\n\r\n```\r\nIt would be interesting to mention how this setup interact with CORS in the\r\nWeb environment. An issuer could restrict their responses to attester.example/* for instance.\r\nThe use of wrapped response would not benefit from this sanitasation.\r\n```",
+      "createdAt": "2024-03-08T16:45:13Z",
+      "updatedAt": "2024-03-08T16:45:13Z",
       "closedAt": null,
       "comments": []
     }
