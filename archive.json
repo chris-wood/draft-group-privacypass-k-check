@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-10T01:13:37.224517+00:00",
+  "timestamp": "2024-03-12T01:08:47.420738+00:00",
   "repo": "ietf-wg-privacypass/draft-ietf-privacypass-consistency-mirror",
   "labels": [
     {
@@ -47,6 +47,11 @@
       "name": "wontfix",
       "description": "This will not be worked on",
       "color": "ffffff"
+    },
+    {
+      "name": "discuss",
+      "description": "",
+      "color": "F37263"
     }
   ],
   "issues": [
@@ -208,10 +213,12 @@
       "author": "sysrqb",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discuss"
+      ],
       "body": "Consider adding a deployment consideration comment about how to avoid the thundering herd problem.",
       "createdAt": "2023-08-21T15:45:45Z",
-      "updatedAt": "2023-10-23T16:54:40Z",
+      "updatedAt": "2024-03-11T16:32:39Z",
       "closedAt": null,
       "comments": [
         {
@@ -453,10 +460,12 @@
       "author": "bemasc",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discuss"
+      ],
       "body": "In K-Check, the mirrors appear to learn the client IPs.  (There is no requirement to access the mirrors only via a trusted transport proxy.)  Even if the colluding parties aren't able to correlate the individual client IPs to specific requests (e.g. via a timing attack as in #14), a malicious mirror could reveal the entire IP pool to the target.  The target may be able to join configuration use with externally available information about the client IPs to deanonymize requests.\r\n\r\nFor example, consider a web search use case over OHTTP, with a client IP pool of 1,000 users.  If a search query arrives for a topic that is only of interest to 10% of users, in a language spoken by 10% of users, from a user-agent used by 10% of users, then the search provider might be able to use an external user profiling database to identify one client IP in the pool that is likely to be the source of that request.\r\n\r\nA possible mitigation would be to avoid using more than X% of the total pool of mirrors and keep that subset stable over time.  This reduces the likelihood that any single mirror can leak more than a fraction of the total client IP pool.  If one of the mirrors is colluding, the target only learns X% of the client IP pool.  This means that even if one client IP has a profile that is highly consistent with a particular request, there is also a significant possibility that the request came from some other, unknown client IP.",
       "createdAt": "2023-09-18T14:19:41Z",
-      "updatedAt": "2023-09-18T15:57:27Z",
+      "updatedAt": "2024-03-11T16:30:53Z",
       "closedAt": null,
       "comments": [
         {
@@ -548,10 +557,12 @@
       "author": "martinthomson",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discuss"
+      ],
       "body": "I like RFC 9292, but it seems like maybe it is unnecessary for this use case.  The reason that RFC 9292 is used here appears to be that the header fields from the request that the mirror makes of the mirrored resource need to make it to the client.  However, there is no end-to-end integrity protection for the resource.  It would be simpler if the mirror resource were to provide a media type and copy the content directly.",
       "createdAt": "2023-12-01T05:48:52Z",
-      "updatedAt": "2024-01-31T03:53:41Z",
+      "updatedAt": "2024-03-11T16:30:19Z",
       "closedAt": null,
       "comments": [
         {
@@ -643,10 +654,12 @@
       "author": "ehaydenr",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discuss"
+      ],
       "body": "I'm thinking of the following scenario:\r\n\r\n- t=0 OHTTP Gateway gives config A to mirror with validity of 10 mins\r\n- t=5min OHTTP Gateway wants to rotate config to config B\r\n- t=6min client fetches config from OHTTP gateway, gets config B\r\n- t=6min client goes to mirror and is provided config A because it's still valid in cache. Inconsistency\r\n\r\nIf the client is checking multiple mirrors, a similar inconsistency could happen since mirrors will be refreshing their cache at different times.",
       "createdAt": "2024-01-08T17:57:32Z",
-      "updatedAt": "2024-01-30T23:17:39Z",
+      "updatedAt": "2024-03-11T16:29:57Z",
       "closedAt": null,
       "comments": [
         {
